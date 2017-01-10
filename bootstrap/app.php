@@ -6,7 +6,7 @@ require __DIR__ . '/../vendor/autoload.php';
 
 $app = new \Slim\App([
 	'settings' => [
-		'displayErrorDetails' => true,
+		'displayErrorDetails' => true, 'addContentLengthHeader' => false,
 		'db' => [
 			'driver' => 'mysql',
 			'host' => 'localhost',
@@ -44,6 +44,10 @@ $container['view'] = function($container) {
 	return $view;
 };
 
+$container['validator'] = function() {
+	return new App\Validation\Validator;
+};
+
 $container['HomeController'] = function($container) {
 	return new \App\Controllers\HomeController($container);
 };
@@ -51,5 +55,8 @@ $container['HomeController'] = function($container) {
 $container['AuthController'] = function($container) {
 	return new \App\Controllers\Auth\AuthController($container);
 };
+
+$app->add(new \App\Middleware\ValidationErrorsMiddleware($container));
+$app->add(new \App\Middleware\OldInputMiddleware($container));
 
 require __DIR__ . '/../app/routes.php';
