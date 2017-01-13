@@ -14,7 +14,7 @@ $app = new \Slim\App([
 			'host' => 'localhost',
 			'database' => 'auth',
 			'username' => 'root',
-			'password' => 'wildlife7238',
+			'password' => 'root',
 			'charset' => 'utf8',
 			'collation' => 'utf8_unicode_ci',
 			'prefix' => '',
@@ -71,6 +71,10 @@ $container['HomeController'] = function($container) {
 
 $container['AuthController'] = function($container) {
 	return new \App\Controllers\Auth\AuthController($container);
+};
+
+$container['PasswordController'] = function($container) {
+	return new \App\Controllers\Auth\PasswordController($container);
 };
 
 $container['csrf'] = function($container) {
