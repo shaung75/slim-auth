@@ -6,8 +6,16 @@ use App\Models\User;
 use App\Controllers\Controller;
 use Respect\Validation\Validator as v;
 
+/**
+ * AuthController Class
+ *
+ * @author Shaun Gill
+ */
 class AuthController extends Controller
 {
+	/**
+	 * Signs user out and redirects to homepage
+	 */
 	public function getSignOut($request, $response)
 	{
 		$this->auth->logout();
@@ -15,11 +23,18 @@ class AuthController extends Controller
 		return $this->response->withRedirect($this->router->pathFor('home'));
 	}
 
+	/**
+	 * Displays sign in page
+	 */
 	public function getSignIn($request, $response)
 	{
 		return $this->view->render($response, 'auth/signin.twig');
 	}
 
+	/**
+	 * Attempts sign in, returns to sign in page if fails
+	 * or logs in is successful
+	 */
 	public function postSignIn($request, $response)
 	{
 		$auth = $this->auth->attempt(
@@ -35,11 +50,18 @@ class AuthController extends Controller
 		return $response->withRedirect($this->router->pathFor('home'));
 	}
 
+	/**
+	 * Displays sign up page
+	 */
 	public function getSignUp($request, $response)
 	{
 		return $this->view->render($response, 'auth/signup.twig');
 	}	
 
+	/**
+	 * Attempts to create new user, redirects to signup page if fails,
+	 * creates new user and redirects to home if successful
+	 */
 	public function postSignUp($request, $response)
 	{
 		$validation = $this->validator->validate($request, [

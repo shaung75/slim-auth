@@ -2,6 +2,13 @@
 
 namespace App\Middleware;
 
+/**
+ * GuestMiddleware Class
+ *
+ * Redirects user to home if logged in
+ * 
+ * @author Shaun Gill
+ */
 class GuestMiddleware extends Middleware
 {
 	public function __invoke($request, $response, $next)

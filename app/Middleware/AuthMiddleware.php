@@ -2,6 +2,12 @@
 
 namespace App\Middleware;
 
+/**
+ * AuthMiddleware Class
+ *
+ * Redirects User to sign in page if not logged in
+ * @author Shaun Gill
+ */
 class AuthMiddleware extends Middleware
 {
 	public function __invoke($request, $response, $next)

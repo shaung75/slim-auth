@@ -2,6 +2,13 @@
 
 namespace App\Middleware;
 
+/**
+ * CsrfViewMiddleWare
+ *
+ * Adds tokens into forms to prevent CSRF attacks
+ * 
+ * @author Shaun Gill
+ */
 class CsrfViewMiddleware extends Middleware
 {
 	public function __invoke($request, $response, $next)

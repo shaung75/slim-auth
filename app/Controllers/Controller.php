@@ -2,6 +2,11 @@
 
 namespace App\Controllers;
 
+/**
+ * Main Controller Class
+ *
+ * @author Shaun Gill
+ */
 class Controller
 {
 	protected $container;

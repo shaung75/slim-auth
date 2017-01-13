@@ -2,6 +2,13 @@
 
 namespace App\Middleware;
 
+/**
+ * ValidationErrorsMiddleware Class
+ *
+ * Builds array of validation errors
+ *
+ * @author Shaun Gill
+ */
 class ValidationErrorsMiddleware extends Middleware
 {
 	public function __invoke($request, $response, $next)
