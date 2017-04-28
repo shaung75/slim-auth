@@ -12,7 +12,7 @@ $app = new \Slim\App([
 		'db' => [
 			'driver' => 'mysql',
 			'host' => 'localhost',
-			'database' => 'auth',
+			'database' => 'll-db',
 			'username' => 'root',
 			'password' => 'wildlife7238',
 			'charset' => 'utf8',
@@ -37,6 +37,10 @@ $container['auth'] = function($container) {
 	return new \App\Auth\Auth;
 };
 
+$container['trust'] = function($container) {
+	return new \App\Models\Trust;
+};
+
 $container['flash'] = function($container) {
 	return new \Slim\Flash\Messages;
 };
@@ -53,7 +57,12 @@ $container['view'] = function($container) {
 
 	$view->getEnvironment()->addGlobal('auth', [
 		'check' => $container->auth->check(),
+		'check_admin' => $container->auth->check_admin(),
 		'user' => $container->auth->user() 
+	]);
+
+	$view->getEnvironment()->addGlobal('trust', [
+		'all' => $container->trust->all()
 	]);
 
 	$view->getEnvironment()->addGlobal('flash', $container->flash);
@@ -63,6 +72,10 @@ $container['view'] = function($container) {
 
 $container['validator'] = function() {
 	return new App\Validation\Validator;
+};
+
+$container['AdminController'] = function($container) {
+	return new \App\Controllers\AdminController($container);
 };
 
 $container['HomeController'] = function($container) {

@@ -18,12 +18,19 @@
       </ul>
       <ul class="nav navbar-nav navbar-right">
         {% if auth.check %}
+          {% if auth.check_admin %}
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">User Management <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="{{ path_for('admin.newUser') }}">Create User</a></li>
+              </ul>
+            </li>
+          {% endif %}
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ auth.user.name }} <span class="caret"></span></a>
             <ul class="dropdown-menu">
               <li><a href="{{ path_for('auth.password.change') }}">Change password</a></li>
               <li><a href="{{ path_for('auth.signout') }}">Sign out</a></li>
-              
             </ul>
           </li>
         {% else %}

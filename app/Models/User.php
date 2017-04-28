@@ -25,6 +25,8 @@ class User extends Model
 		'name',
 		'email',
 		'password',
+		'level',
+		'trusts_idtrusts',
 	];
 
 	/**

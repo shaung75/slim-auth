@@ -86,4 +86,40 @@ class AuthController extends Controller
 
 		return $response->withRedirect($this->router->pathFor('home'));
 	}
+
+	/**
+	 * Displays create User page
+	 */
+	public function getCreateUser($request, $response)
+	{
+		return $this->view->render($response, 'auth/createUser.twig');
+	}	
+
+	/**
+	 * Attempts to create new user, redirects to signup page if fails,
+	 * creates new user and redirects to home if successful
+	 */
+	public function postCreateUser($request, $response)
+	{
+		$validation = $this->validator->validate($request, [
+			'email' => v::noWhitespace()->notEmpty()->email()->emailAvailable(),
+			'name' => v::notEmpty()->alpha(),
+			'password' => v::notEmpty(),
+		]);
+
+		if($validation->failed()) {
+			return $response->withRedirect($this->router->pathFor('admin.newUser'));
+		}
+
+		$user = User::create([
+			'email' => $request->getParam('email'),
+			'name' => $request->getParam('name'),
+			'password' => password_hash($request->getParam('password'), PASSWORD_DEFAULT),
+			'trusts_idtrusts' => $request->getParam('trust'),
+		]);
+
+		$this->flash->addMessage('info', 'New user ('.$user->email.') created');
+
+		return $response->withRedirect($this->router->pathFor('admin.newUser'));
+	}
 }
