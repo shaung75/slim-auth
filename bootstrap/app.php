@@ -48,6 +48,7 @@ $container['flash'] = function($container) {
 $container['view'] = function($container) {
 	$view = new \Slim\Views\Twig(__DIR__ . '/../resources/views', [
 		'cache' => false,
+		'debug' => true,
 	]);
 
 	$view->addExtension(new \Slim\Views\TwigExtension(
@@ -88,6 +89,10 @@ $container['AuthController'] = function($container) {
 
 $container['PasswordController'] = function($container) {
 	return new \App\Controllers\Auth\PasswordController($container);
+};
+
+$container['TestController'] = function($container) {
+	return new \App\Controllers\TestController($container);
 };
 
 $container['csrf'] = function($container) {
