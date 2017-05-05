@@ -95,6 +95,10 @@ $container['TestController'] = function($container) {
 	return new \App\Controllers\TestController($container);
 };
 
+$container['SchemeController'] = function($container) {
+	return new \App\Controllers\SchemeController($container);
+};
+
 $container['csrf'] = function($container) {
 	return new \Slim\Csrf\Guard;
 };

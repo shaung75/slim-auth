@@ -31,6 +31,9 @@ $app->group('', function() {
 	$this->get('/auth/password/change', 'PasswordController:getChangePassword')->setName('auth.password.change');
 	$this->post('/auth/password/change', 'PasswordController:postChangePassword');
 
+	$this->get('/scheme/add', 'SchemeController:index')->setName('scheme.add');
+	$this->post('/scheme/add', 'SchemeController:addScheme');
+
 	$this->get('/test', 'TestController:index')->setName('test');
 	$this->post('/test', 'TestController:newScheme');
 })->add(new AuthMiddleware($container));

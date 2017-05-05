@@ -1,0 +1,374 @@
+{% extends 'templates/app.twig' %}
+
+{% block content %}
+	<div class="row">
+		<div class="col-md-12">
+			<h2>New Living Landscape Scheme</h2>	
+			<hr>
+			<form action="{{ path_for('scheme.add') }}" method="post" autocomplete="off">
+				<div class="form-group{{ errors.schemeName ? ' has-error' : '' }}">
+					<label for="schemeName">Scheme Name</label>
+					<input type="text" name="schemeName" id="schemeName" class="form-control" value="{{ old.schemeName }}">
+					{% if errors.schemeName %}
+						<span class="help-block">{{ errors.schemeName | first }}</span>
+					{% endif %}
+				</div>
+				<div class="form-group{{ errors.region ? 'has-error' : '' }}">
+					<label for="region">Region</label>
+					<select class="form-control" name="region">
+						<option value="Scotland">Scotland</option>
+						<option value="North East">North East</option>
+						<option value="North West">North West</option>
+						<option value="Yorkshire and Humber">Yorkshire and Humber</option>
+						<option value="East Midlands">East Midlands</option>
+						<option value="West Midlands">West Midlands</option>
+						<option value="Eastern">Eastern</option>
+						<option value="South East">South East</option>
+						<option value="South West">South West</option>
+						<option value="London">London</option>
+						<option value="Irish Sea">Irish Sea</option>
+					</select>
+				</div>
+				<div class="row">
+					<div class="col-md-6">
+					{% for trusts in trust.all %}
+						<div class="checkbox{% if auth.user.trusts_idtrusts == loop.index %}{% endif %}" >
+							<label>
+								<input type="checkbox" name="trust[]" value="{{ loop.index }}" {% if loop.index in old.trust or auth.user.trusts_idtrusts == loop.index %}checked{% endif %} {% if auth.user.trusts_idtrusts == loop.index %}{% endif %}> {{ trusts.trust }}
+							</label>
+						</div>
+						{% if loop.index is divisible by(24) %}
+							</div>
+							<div class="col-md-6">
+						{% endif %}
+					{% endfor %}
+					</div>
+				</div>
+				<div class="form-group{{ errors.aims ? ' has-error' : '' }}">
+					<label for="aims">Aims</label>
+					<textarea name="aims" class="form-control" rows="5">{{ old.aims }}</textarea>
+					{% if errors.aims %}
+						<span class="help-block">{{ errors.aims | first }}</span>
+					{% endif %}
+				</div>
+				<div class="form-group{{ errors.sizeHA ? ' has-error' : '' }}">
+					<label for="sizeHA">Size (HA)</label>
+					<input type="number" name="sizeHA" id="sizeHA" class="form-control" value="{{ old.sizeHA }}">
+					{% if errors.sizeHA %}
+						<span class="help-block">{{ errors.sizeHA | first }}</span>
+					{% endif %}
+				</div>
+				<div class="row">
+					<div class="col-md-12">
+						<label for="gisLayerSupplied">GIS Layer Provided?</label>
+						<div class="radio">
+							<label>
+								<input type="radio" name="gisLayerSupplied" value="Yes" {{ old.gisLayerSupplied == 'Yes' ? 'checked="checked"' : '' }}> Yes
+							</label>
+						</div>
+						<div class="radio">
+							<label>
+								<input type="radio" name="gisLayerSupplied" value="No" {{ old.gisLayerSupplied == 'No' ? 'checked="checked"' : '' }}> No
+							</label>
+						</div>
+						<div class="radio">
+							<label>
+								<input type="radio" name="gisLayerSupplied" value="Not yet digitised" {{ old.gisLayerSupplied == 'Not yet digitised' ? 'checked="checked"' : '' }}> Not yet digitised
+							</label>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-12">
+						<label for="stage">Stage</label>
+						<div class="radio">
+							<label>
+								<input type="radio" name="stage" value="In development" {{ old.stage == 'In development' ? 'checked="checked"' : '' }}> In development
+							</label>
+						</div>
+						<div class="radio">
+							<label>
+								<input type="radio" name="stage" value="Currently active" {{ old.stage == 'Currently active' ? 'checked="checked"' : '' }}> Currently active
+							</label>
+						</div>
+						<div class="radio">
+							<label>
+								<input type="radio" name="stage" value="Complete" {{ old.stage == 'Complete' ? 'checked="checked"' : '' }}> Complete
+							</label>
+						</div>
+					</div>
+				</div>
+				<div class="form-group{{ errors.startDate ? ' has-error' : '' }}">
+					<label for="startDate">Start Date</label>
+					<input type="text" name="startDate" id="startDate" class="form-control" value="{{ old.startDate }}">
+					{% if errors.startDate %}
+						<span class="help-block">{{ errors.startDate | first }}</span>
+					{% endif %}
+				</div>
+				<div class="form-group{{ errors.endDate ? ' has-error' : '' }}">
+					<label for="endDate">End Date</label>
+					<input type="text" name="endDate" id="endDate" class="form-control" value="{{ old.endDate }}">
+					{% if errors.endDate %}
+						<span class="help-block">{{ errors.endDate | first }}</span>
+					{% endif %}
+				</div>
+				<div class="form-group{{ errors.duration ? ' has-error' : '' }}">
+					<label for="duration">Duration</label>
+					<input type="text" name="duration" id="duration" class="form-control" value="{{ old.duration }}">
+					{% if errors.schemeName %}
+						<span class="help-block">{{ errors.duration | first }}</span>
+					{% endif %}
+				</div>
+				<div class="form-group{{ errors.nearestCity ? ' has-error' : '' }}">
+					<label for="nearestCity">Nearest City</label>
+					<input type="text" name="nearestCity" id="nearestCity" class="form-control" value="{{ old.nearestCity }}">
+					{% if errors.nearestCity %}
+						<span class="help-block">{{ errors.nearestCity | first }}</span>
+					{% endif %}
+				</div>
+				<div class="form-group{{ errors.localAuthorityAreas ? ' has-error' : '' }}">
+					<label for="localAuthorityAreas">Local authority areas</label>
+					<input type="text" name="localAuthorityAreas" id="localAuthorityAreas" class="form-control" value="{{ old.localAuthorityAreas }}">
+					{% if errors.localAuthorityAreas %}
+						<span class="help-block">{{ errors.localAuthorityAreas | first }}</span>
+					{% endif %}
+				</div>
+				<div class="form-group{{ errors.deliveryLandOwnerAdvice ? ' has-error' : '' }}">
+					<label for="deliveryLandOwnerAdvice">Land Owner Advice</label>
+					<textarea name="deliveryLandOwnerAdvice" class="form-control" rows="5">{{ old.deliveryLandOwnerAdvice }}</textarea>
+					{% if errors.deliveryLandOwnerAdvice %}
+						<span class="help-block">{{ errors.deliveryLandOwnerAdvice | first }}</span>
+					{% endif %}
+				</div>
+				<div class="form-group{{ errors.deliveryManagementAgreements ? ' has-error' : '' }}">
+					<label for="deliveryManagementAgreements">Management Agreements</label>
+					<textarea name="deliveryManagementAgreements" class="form-control" rows="5">{{ old.deliveryManagementAgreements }}</textarea>
+					{% if errors.deliveryManagementAgreements %}
+						<span class="help-block">{{ errors.deliveryManagementAgreements | first }}</span>
+					{% endif %}
+				</div>
+				<div class="form-group{{ errors.deliveryAgriEnvironmentalSchemes ? ' has-error' : '' }}">
+					<label for="deliveryAgriEnvironmentalSchemes">Agri Environmental Schemes</label>
+					<textarea name="deliveryAgriEnvironmentalSchemes" class="form-control" rows="5">{{ old.deliveryAgriEnvironmentalSchemes }}</textarea>
+					{% if errors.deliveryAgriEnvironmentalSchemes %}
+						<span class="help-block">{{ errors.deliveryAgriEnvironmentalSchemes | first }}</span>
+					{% endif %}
+				</div>
+				<div class="form-group{{ errors.deliveryLandAcquisition ? ' has-error' : '' }}">
+					<label for="deliveryLandAcquisition">Land Acquisition</label>
+					<textarea name="deliveryLandAcquisition" class="form-control" rows="5">{{ old.deliveryLandAcquisition }}</textarea>
+					{% if errors.deliveryLandAcquisitions %}
+						<span class="help-block">{{ errors.deliveryLandAcquisition | first }}</span>
+					{% endif %}
+				</div>
+				<div class="form-group{{ errors.deliveryGrazingSchemes ? ' has-error' : '' }}">
+					<label for="deliveryGrazingSchemes">Grazing Schemes</label>
+					<textarea name="deliveryGrazingSchemes" class="form-control" rows="5">{{ old.deliveryGrazingSchemes }}</textarea>
+					{% if errors.deliveryGrazingSchemes %}
+						<span class="help-block">{{ errors.deliveryGrazingSchemes | first }}</span>
+					{% endif %}
+				</div>
+				<div class="form-group{{ errors.deliveryManagementRealignment ? ' has-error' : '' }}">
+					<label for="deliveryManagementRealignment">Management Realignment</label>
+					<textarea name="deliveryManagementRealignment" class="form-control" rows="5">{{ old.deliveryManagementRealignment }}</textarea>
+					{% if errors.deliveryManagementRealignment %}
+						<span class="help-block">{{ errors.deliveryManagementRealignment | first }}</span>
+					{% endif %}
+				</div>
+				<div class="form-group{{ errors.deliveryCommunityEngagement ? ' has-error' : '' }}">
+					<label for="deliveryCommunityEngagement">Community Engagement</label>
+					<textarea name="deliveryCommunityEngagement" class="form-control" rows="5">{{ old.deliveryCommunityEngagement }}</textarea>
+					{% if errors.deliveryCommunityEngagement %}
+						<span class="help-block">{{ errors.deliveryCommunityEngagement | first }}</span>
+					{% endif %}
+				</div>
+				<div class="form-group{{ errors.deliveryMonitoringDetails ? ' has-error' : '' }}">
+					<label for="deliveryMonitoringDetails">Monitoring Details</label>
+					<textarea name="deliveryMonitoringDetails" class="form-control" rows="5">{{ old.deliveryMonitoringDetails }}</textarea>
+					{% if errors.deliveryMonitoringDetails %}
+						<span class="help-block">{{ errors.deliveryMonitoringDetails | first }}</span>
+					{% endif %}
+				</div>
+				<div class="form-group{{ errors.benefitClimateChange ? ' has-error' : '' }}">
+					<label for="benefitClimateChange">Climate Change</label>
+					<textarea name="benefitClimateChange" class="form-control" rows="5">{{ old.benefitClimateChange }}</textarea>
+					{% if errors.benefitClimateChange %}
+						<span class="help-block">{{ errors.benefitClimateChange | first }}</span>
+					{% endif %}
+				</div>
+				<div class="form-group{{ errors.benefitWaterQuality ? ' has-error' : '' }}">
+					<label for="benefitWaterQuality">Water Quality</label>
+					<textarea name="benefitWaterQuality" class="form-control" rows="5">{{ old.benefitWaterQuality }}</textarea>
+					{% if errors.benefitWaterQuality %}
+						<span class="help-block">{{ errors.benefitWaterQuality | first }}</span>
+					{% endif %}
+				</div>
+				<div class="form-group{{ errors.benefitReducedFloodRisk ? ' has-error' : '' }}">
+					<label for="benefitReducedFloodRisk">Reduced Flood Risk</label>
+					<textarea name="benefitReducedFloodRisk" class="form-control" rows="5">{{ old.benefitReducedFloodRisk }}</textarea>
+					{% if errors.benefitReducedFloodRisk %}
+						<span class="help-block">{{ errors.benefitReducedFloodRisk | first }}</span>
+					{% endif %}
+				</div>
+				<div class="form-group{{ errors.benefitCarbonStorage ? ' has-error' : '' }}">
+					<label for="benefitCarbonStorage">Carbon Storage</label>
+					<textarea name="benefitCarbonStorage" class="form-control" rows="5">{{ old.benefitCarbonStorage }}</textarea>
+					{% if errors.benefitCarbonStorage %}
+						<span class="help-block">{{ errors.benefitCarbonStorage | first }}</span>
+					{% endif %}
+				</div>
+				<div class="form-group{{ errors.benefitAirQuality ? ' has-error' : '' }}">
+					<label for="benefitAirQuality">Air Quality</label>
+					<textarea name="benefitAirQuality" class="form-control" rows="5">{{ old.benefitAirQuality }}</textarea>
+					{% if errors.benefitAirQuality %}
+						<span class="help-block">{{ errors.benefitAirQuality | first }}</span>
+					{% endif %}
+				</div>
+				<div class="form-group{{ errors.benefitHabitatProvision ? ' has-error' : '' }}">
+					<label for="benefitHabitatProvision">Habitat Provision</label>
+					<textarea name="benefitHabitatProvision" class="form-control" rows="5">{{ old.benefitHabitatProvision }}</textarea>
+					{% if errors.benefitHabitatProvision %}
+						<span class="help-block">{{ errors.benefitHabitatProvision | first }}</span>
+					{% endif %}
+				</div>
+				<div class="form-group{{ errors.benefitVolunteeringOpportunities ? ' has-error' : '' }}">
+					<label for="benefitVolunteeringOpportunities">Volunteering Opportunities</label>
+					<textarea name="benefitVolunteeringOpportunities" class="form-control" rows="5">{{ old.benefitVolunteeringOpportunities }}</textarea>
+					{% if errors.benefitVolunteeringOpportunities %}
+						<span class="help-block">{{ errors.benefitVolunteeringOpportunities | first }}</span>
+					{% endif %}
+				</div>
+				<div class="form-group{{ errors.benefitImprovedAccess ? ' has-error' : '' }}">
+					<label for="benefitImprovedAccess">Improved Access</label>
+					<textarea name="benefitImprovedAccess" class="form-control" rows="5">{{ old.benefitImprovedAccess }}</textarea>
+					{% if errors.benefitImprovedAccess %}
+						<span class="help-block">{{ errors.benefitImprovedAccess | first }}</span>
+					{% endif %}
+				</div>
+				<div class="form-group{{ errors.benefitUrbanRegeneration ? ' has-error' : '' }}">
+					<label for="benefitUrbanRegeneration">Urban Regeneration</label>
+					<textarea name="benefitUrbanRegeneration" class="form-control" rows="5">{{ old.benefitUrbanRegeneration }}</textarea>
+					{% if errors.benefitUrbanRegeneration %}
+						<span class="help-block">{{ errors.benefitUrbanRegeneration | first }}</span>
+					{% endif %}
+				</div>
+				<div class="form-group{{ errors.benefitLocalEconomy ? ' has-error' : '' }}">
+					<label for="benefitLocalEconomy">Local Economy</label>
+					<textarea name="benefitLocalEconomy" class="form-control" rows="5">{{ old.benefitLocalEconomy }}</textarea>
+					{% if errors.benefitLocalEconomy %}
+						<span class="help-block">{{ errors.benefitLocalEconomy | first }}</span>
+					{% endif %}
+				</div>
+				<div class="form-group{{ errors.benefitLocalFoodProduction ? ' has-error' : '' }}">
+					<label for="benefitLocalFoodProduction">Local Food Production</label>
+					<textarea name="benefitLocalFoodProduction" class="form-control" rows="5">{{ old.benefitLocalFoodProduction }}</textarea>
+					{% if errors.benefitLocalFoodProduction %}
+						<span class="help-block">{{ errors.benefitLocalFoodProduction | first }}</span>
+					{% endif %}
+				</div>
+				<div class="form-group{{ errors.benefitSkillsTraining ? ' has-error' : '' }}">
+					<label for="benefitSkillsTraining">Skills Training</label>
+					<textarea name="benefitSkillsTraining" class="form-control" rows="5">{{ old.benefitSkillsTraining }}</textarea>
+					{% if errors.benefitSkillsTraining %}
+						<span class="help-block">{{ errors.benefitSkillsTraining | first }}</span>
+					{% endif %}
+				</div>
+				<div class="form-group{{ errors.benefitEnvironmentalEducation ? ' has-error' : '' }}">
+					<label for="benefitEnvironmentalEducation">Environmental Education</label>
+					<textarea name="benefitEnvironmentalEducation" class="form-control" rows="5">{{ old.benefitEnvironmentalEducation }}</textarea>
+					{% if errors.benefitEnvironmentalEducation %}
+						<span class="help-block">{{ errors.benefitEnvironmentalEducation | first }}</span>
+					{% endif %}
+				</div>
+				<div class="form-group{{ errors.benefitGreenTourism ? ' has-error' : '' }}">
+					<label for="benefitGreenTourism">Green Tourism</label>
+					<textarea name="benefitGreenTourism" class="form-control" rows="5">{{ old.benefitGreenTourism }}</textarea>
+					{% if errors.benefitGreenTourism %}
+						<span class="help-block">{{ errors.benefitGreenTourism | first }}</span>
+					{% endif %}
+				</div>
+				<div class="form-group{{ errors.benefitHealth ? ' has-error' : '' }}">
+					<label for="benefitHealth">Health</label>
+					<textarea name="benefitHealth" class="form-control" rows="5">{{ old.benefitHealth }}</textarea>
+					{% if errors.benefitHealth %}
+						<span class="help-block">{{ errors.benefitHealth | first }}</span>
+					{% endif %}
+				</div>
+				<div class="form-group{{ errors.benefitRecreationalOpportunities ? ' has-error' : '' }}">
+					<label for="benefitRecreationalOpportunities">Recreational Opportunities</label>
+					<textarea name="benefitRecreationalOpportunities" class="form-control" rows="5">{{ old.benefitRecreationalOpportunities }}</textarea>
+					{% if errors.benefitRecreationalOpportunities %}
+						<span class="help-block">{{ errors.benefitRecreationalOpportunities | first }}</span>
+					{% endif %}
+				</div>
+				<div class="form-group{{ errors.benefitEmployment ? ' has-error' : '' }}">
+					<label for="benefitEmployment">Employment</label>
+					<textarea name="benefitEmployment" class="form-control" rows="5">{{ old.benefitEmployment }}</textarea>
+					{% if errors.benefitEmployment %}
+						<span class="help-block">{{ errors.benefitEmployment | first }}</span>
+					{% endif %}
+				</div>
+				<div class="form-group{{ errors.progressSchemeProgress ? ' has-error' : '' }}">
+					<label for="progressSchemeProgress">Scheme Progress</label>
+					<textarea name="progressSchemeProgress" class="form-control" rows="5">{{ old.progressSchemeProgress }}</textarea>
+					{% if errors.progressSchemeProgress %}
+						<span class="help-block">{{ errors.progressSchemeProgress | first }}</span>
+					{% endif %}
+				</div>
+				<div class="form-group{{ errors.progressDeliveryBarrier ? ' has-error' : '' }}">
+					<label for="progressDeliveryBarrier">Delivery Barrier</label>
+					<textarea name="progressDeliveryBarrier" class="form-control" rows="5">{{ old.progressDeliveryBarrier }}</textarea>
+					{% if errors.progressDeliveryBarrier %}
+						<span class="help-block">{{ errors.progressDeliveryBarrier | first }}</span>
+					{% endif %}
+				</div>
+				<div class="form-group{{ errors.progressSchemeOutputs ? ' has-error' : '' }}">
+					<label for="progressSchemeOutputs">Scheme Outputs</label>
+					<textarea name="progressSchemeOutputs" class="form-control" rows="5">{{ old.progressSchemeOutputs }}</textarea>
+					{% if errors.progressSchemeOutputs %}
+						<span class="help-block">{{ errors.progressSchemeOutputs | first }}</span>
+					{% endif %}
+				</div>
+				<div class="form-group{{ errors.schemeWebsite ? ' has-error' : '' }}">
+					<label for="schemeWebsite">Scheme Website</label>
+					<input type="text" name="schemeWebsite" id="schemeWebsite" class="form-control" value="{{ old.schemeWebsite }}">
+					{% if errors.schemeWebsite %}
+						<span class="help-block">{{ errors.schemeWebsite | first }}</span>
+					{% endif %}
+				</div>
+				<div class="form-group{{ errors.contactName ? ' has-error' : '' }}">
+					<label for="contactName">Contact Name</label>
+					<input type="text" name="contactName" id="contactName" class="form-control" value="{{ old.contactName }}">
+					{% if errors.contactName %}
+						<span class="help-block">{{ errors.contactName | first }}</span>
+					{% endif %}
+				</div>
+				<div class="form-group{{ errors.contactJobTitle ? ' has-error' : '' }}">
+					<label for="contactJobTitle">Job Title</label>
+					<input type="text" name="contactJobTitle" id="contactJobTitle" class="form-control" value="{{ old.contactJobTitle }}">
+					{% if errors.contactJobTitle %}
+						<span class="help-block">{{ errors.contactJobTitle | first }}</span>
+					{% endif %}
+				</div>
+				<div class="form-group{{ errors.contactPhone ? ' has-error' : '' }}">
+					<label for="contactPhone">Contact Phone</label>
+					<input type="text" name="contactPhone" id="contactPhone" class="form-control" value="{{ old.contactPhone }}">
+					{% if errors.contactPhone %}
+						<span class="help-block">{{ errors.contactPhone | first }}</span>
+					{% endif %}
+				</div>
+				<div class="form-group{{ errors.contactEmail ? ' has-error' : '' }}">
+					<label for="contactEmail">Contact Email</label>
+					<input type="email" name="contactEmail" id="contactEmail" class="form-control" value="{{ old.contactEmail }}">
+					{% if errors.contactEmail %}
+						<span class="help-block">{{ errors.contactEmail | first }}</span>
+					{% endif %}
+				</div>
+				
+				<button type="submit" class="btn btn-default">Create Scheme</button>
+
+				{{ csrf.field | raw }}
+			</form>	
+		</div>
+	</div>
+{% endblock %}
