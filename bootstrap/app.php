@@ -41,6 +41,26 @@ $container['trust'] = function($container) {
 	return new \App\Models\Trust;
 };
 
+$container['species'] = function($container) {
+	return new \App\Models\Species;
+};
+
+$container['habitats'] = function($container) {
+	return new \App\Models\Habitat;
+};
+
+$container['habitatcats'] = function($container) {
+	return new \App\Models\Habitatcat;
+};
+
+$container['partners'] = function($container) {
+	return new \App\Models\Partner;
+};
+
+$container['partnercats'] = function($container) {
+	return new \App\Models\Partnercat;
+};
+
 $container['flash'] = function($container) {
 	return new \Slim\Flash\Messages;
 };
@@ -64,6 +84,28 @@ $container['view'] = function($container) {
 
 	$view->getEnvironment()->addGlobal('trust', [
 		'all' => $container->trust->all()
+	]);
+
+	$view->getEnvironment()->addGlobal('habitats', [
+		'all' => $container->habitats->with('category')->get()
+	]);
+
+	$view->getEnvironment()->addGlobal('habitatcats', [
+		'all' => $container->habitatcats->all()
+	]);
+
+
+	$view->getEnvironment()->addGlobal('partnerss', [
+		'all' => $container->partners->with('category')->get()
+	]);
+
+	$view->getEnvironment()->addGlobal('partnercats', [
+		'all' => $container->partnercats->all()
+	]);
+
+
+	$view->getEnvironment()->addGlobal('species', [
+		'all' => $container->species->orderBy('species', 'ASC')->get()
 	]);
 
 	$view->getEnvironment()->addGlobal('flash', $container->flash);

@@ -75,7 +75,7 @@ class Scheme extends Model
 
 	public function habitats()
 	{
-		return $this->belongsToMany('App\Models\Habitats');
+		return $this->belongsToMany('App\Models\Habitat', 'habitat_scheme', 'scheme_id', 'habitat_id');
 	}
 
 	public function fundingSources()
@@ -85,7 +85,7 @@ class Scheme extends Model
 
 	public function partners()
 	{
-		return $this->belongsToMany('App\Models\Partners');
+		return $this->belongsToMany('App\Models\Partner', 'partner_scheme', 'scheme_id', 'partner_id');
 	}
 
 	public function restoredHabitats()
@@ -95,7 +95,7 @@ class Scheme extends Model
 
 	public function species()
 	{
-		return $this->belongsToMany('App\Models\Species');
+		return $this->belongsToMany('App\Models\Species', 'scheme_species', 'scheme_id', 'species_id');
 	}
 
 	public function trusts()

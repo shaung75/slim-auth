@@ -6,6 +6,46 @@
 			<h2>New Living Landscape Scheme</h2>	
 			<hr>
 			<form action="{{ path_for('scheme.add') }}" method="post" autocomplete="off">
+				
+				<div class="row">
+					<div class="col-md-4">
+					{% for partnercat in partnercats.all %}
+						<label>{{ partnercat.partnerCategory }}</label>
+						{% for partner in partnerss.all if partner.partner_categories_id == partnercat.id %}
+							<div class="checkbox">
+								<label>
+		        					<input type="checkbox" name="partners[]" value="{{ partner.id }}"> {{ partner.partner }}
+		        				</label>
+		        			</div>
+	    				{% endfor %}
+	    				{% if loop.index is divisible by(2) %}
+							</div>
+							<div class="col-md-4">
+						{% endif %}
+					{% endfor %}
+					</div>
+				</div>	
+
+				<hr>
+
+				<div class="row">
+					<div class="col-md-4">
+					{% for habcat in habitatcats.all %}
+						<label>{{ habcat.habitat_category }}</label>
+						{% for hab in habitats.all if hab.habitat_categories_id == habcat.id %}
+							<div class="checkbox">
+								<label>
+		        					<input type="checkbox" name="habitats[]" value="{{ hab.id }}"> {{ hab.habitat }}
+		        				</label>
+		        			</div>
+	    				{% endfor %}
+	    				{% if loop.index is divisible by(4) %}
+							</div>
+							<div class="col-md-4">
+						{% endif %}
+					{% endfor %}
+					</div>
+				</div>			
 				<div class="form-group{{ errors.schemeName ? ' has-error' : '' }}">
 					<label for="schemeName">Scheme Name</label>
 					<input type="text" name="schemeName" id="schemeName" class="form-control" value="{{ old.schemeName }}">
@@ -16,6 +56,7 @@
 				<div class="form-group{{ errors.region ? 'has-error' : '' }}">
 					<label for="region">Region</label>
 					<select class="form-control" name="region">
+						<option disabled selected>Region</option>
 						<option value="Scotland">Scotland</option>
 						<option value="North East">North East</option>
 						<option value="North West">North West</option>
@@ -29,12 +70,20 @@
 						<option value="Irish Sea">Irish Sea</option>
 					</select>
 				</div>
+				<div class="form-group{{ errors.region ? 'has-error' : '' }}">
+					<label for="species">Key Species</label> (ctrl+click for multiple)
+					<select class="form-control" name="species[]" multiple size="10">
+					{% for specie in species.all %}
+						<option value="{{ specie.id }}" {% if specie.id in old.species %}selected{% endif %}>{{ specie.species }}</option>
+					{% endfor %}
+					</select>
+				</div>
 				<div class="row">
 					<div class="col-md-6">
 					{% for trusts in trust.all %}
 						<div class="checkbox{% if auth.user.trusts_idtrusts == loop.index %}{% endif %}" >
 							<label>
-								<input type="checkbox" name="trust[]" value="{{ loop.index }}" {% if loop.index in old.trust or auth.user.trusts_idtrusts == loop.index %}checked{% endif %} {% if auth.user.trusts_idtrusts == loop.index %}{% endif %}> {{ trusts.trust }}
+								<input type="checkbox" name="trust[]" value="{{ trusts.idtrusts }}" {% if loop.index in old.trust or auth.user.trusts_idtrusts == loop.index %}checked{% endif %} {% if auth.user.trusts_idtrusts == loop.index %}{% endif %}> {{ trusts.trust }}
 							</label>
 						</div>
 						{% if loop.index is divisible by(24) %}

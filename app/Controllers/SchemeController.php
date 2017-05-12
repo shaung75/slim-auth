@@ -24,6 +24,10 @@ class SchemeController extends Controller
 
 	public function addScheme($request, $response)
 	{
+		/*echo '<pre>';
+		print_r($request->getParams());
+		die();
+		*/
 		$validation = $this->validator->validate($request, [
 			'schemeName' => v::notEmpty(),
 		]);
@@ -84,6 +88,9 @@ class SchemeController extends Controller
 
 		// Update Relationships...		
 		$scheme->trusts()->attach($request->getParam('trust'));
+		$scheme->species()->attach($request->getParam('species'));
+		$scheme->habitats()->attach($request->getParam('habitats'));
+		$scheme->partners()->attach($request->getParam('partners'));
 
 		$this->flash->addMessage('info', 'New scheme "'. $request->getParam('schemeName') .'" has been created');
 

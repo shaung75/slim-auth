@@ -26,4 +26,8 @@ class FundingSources extends Model
 		'timescale',
 		'scheme_id',
 	];
+
+	public function scheme() {
+		return $this->belongsTo('App\Models\Scheme', 'scheme_id');
+	}
 }

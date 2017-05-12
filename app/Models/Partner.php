@@ -26,4 +26,8 @@ class Partner extends Model
 		'details',
 		'partner_categories_id',
 	];
+
+	public function category() {
+		return $this->belongsTo('App\Models\Partnercat', 'partner_categories_id');
+	}
 }

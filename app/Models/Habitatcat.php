@@ -5,23 +5,27 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Partner Categories Model
+ * Habitat Categories Model
  *
  * @author Shaun Gill
  */
-class PartnerCategories extends Model
+class Habitatcat extends Model
 {
 	/**
 	 * Database Table
 	 * @var string
 	 */
-	protected $table = 'partner_categories';
+	protected $table = 'habitat_categories';
 
 	/**
 	 * Table fields that can have content added
 	 * @var array
 	 */
 	protected $fillable = [
-		'partnerCategory',
+		'habitat_category',
 	];
+
+	public function habitats() {
+		return $this->hasMany('App\Models\Habitats', 'habitat_categories_id');
+	}
 }
