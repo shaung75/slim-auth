@@ -61,6 +61,14 @@ $container['partnercats'] = function($container) {
 	return new \App\Models\Partnercat;
 };
 
+$container['fundingpartners'] = function($container) {
+	return new \App\Models\FundingPartner;
+};
+
+$container['fundingpartnercats'] = function($container) {
+	return new \App\Models\FundingPartnerCat;
+};
+
 $container['flash'] = function($container) {
 	return new \Slim\Flash\Messages;
 };
@@ -101,6 +109,14 @@ $container['view'] = function($container) {
 
 	$view->getEnvironment()->addGlobal('partnercats', [
 		'all' => $container->partnercats->all()
+	]);
+
+	$view->getEnvironment()->addGlobal('fundingpartners', [
+		'all' => $container->fundingpartners->with('category')->get()
+	]);
+
+	$view->getEnvironment()->addGlobal('fundingpartnercats', [
+		'all' => $container->fundingpartnercats->all()
 	]);
 
 

@@ -70,7 +70,7 @@ class Scheme extends Model
 
 	public function createdHabitats()
 	{
-		return $this->belongsToMany('App\Models\Created_Habitats');
+		return $this->hasMany('App\Models\CreatedHabitat');
 	}
 
 	public function habitats()
@@ -80,7 +80,7 @@ class Scheme extends Model
 
 	public function fundingSources()
 	{
-		return $this->belongsToMany('App\Models\Funding_Sources');
+		return $this->hasMany('App\Models\FundingSource');
 	}
 
 	public function partners()
@@ -90,7 +90,7 @@ class Scheme extends Model
 
 	public function restoredHabitats()
 	{
-		return $this->belongsToMany('App\Models\Restored_Habitats');
+		return $this->hasMany('App\Models\RestoredHabitat');
 	}
 
 	public function species()

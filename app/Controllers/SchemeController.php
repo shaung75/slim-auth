@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use Slim\Views\Twig as View;
 use App\Models\Scheme;
+use App\Models\FundingSource as f;
 use App\Controllers\Controller;
 use Respect\Validation\Validator as v;
 
@@ -86,11 +87,34 @@ class SchemeController extends Controller
 
 		$scheme->save();
 
+		//echo '<pre>';
+		//print_r($request->getParams());
+		//die();
+
 		// Update Relationships...		
 		$scheme->trusts()->attach($request->getParam('trust'));
 		$scheme->species()->attach($request->getParam('species'));
 		$scheme->habitats()->attach($request->getParam('habitats'));
 		$scheme->partners()->attach($request->getParam('partners'));
+		
+		foreach($request->getParam('funding_sources') as $fundingSource) {
+			$fs = $scheme->fundingSources()->create($fundingSource);
+			$source = f::find($fs->id);
+			$source->fundingPartner()->attach($fundingSource['funding_partner']);
+		}
+
+		foreach($request->getParam('habitat_restored') as $restoredHabitat) {
+			$scheme->restoredHabitats()->create($restoredHabitat);
+		}
+
+		foreach($request->getParam('habitat_created') as $createdHabitat) {
+			$scheme->createdHabitats()->create($createdHabitat);
+		}
+		
+		//echo '<pre>';
+		//print_r($scheme);
+		//print_r($request->getParams());
+		//die();
 
 		$this->flash->addMessage('info', 'New scheme "'. $request->getParam('schemeName') .'" has been created');
 

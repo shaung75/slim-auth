@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @author Shaun Gill
  */
-class FundingPartnerCategories extends Model
+class FundingPartnerCat extends Model
 {
 	/**
 	 * Database Table
@@ -24,4 +24,8 @@ class FundingPartnerCategories extends Model
 	protected $fillable = [
 		'funding_partner_category',
 	];
+
+	public function partners() {
+		return $this->hasMany('App\Models\FundingPartner', 'funding_partner_categories_id');
+	}
 }

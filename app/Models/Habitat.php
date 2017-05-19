@@ -29,4 +29,12 @@ class Habitat extends Model
 	public function category() {
 		return $this->belongsTo('App\Models\Habitatcat', 'habitat_categories_id');
 	}
+
+	public function restoredHabitat() {
+		return $this->hasMany('App\Models\RestoredHabitat');
+	}
+	
+	public function createdHabitat() {
+		return $this->hasMany('App\Models\CreatedHabitat');
+	}
 }

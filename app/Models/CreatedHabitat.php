@@ -27,4 +27,13 @@ class CreatedHabitat extends Model
 		'scheme_id',
 		'habitat_id',
 	];
+
+	public function scheme() {
+		return $this->belongsTo('App\Models\Scheme', 'scheme_id');
+	}
+
+	public function habitat()
+	{
+		return $this->belongsTo('App\Models\Habitat', 'habitat_id');
+	}
 }
