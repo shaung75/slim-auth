@@ -5,6 +5,8 @@
 		<div class="col-md-12">
 			<h2>New Living Landscape Scheme</h2>	
 			<hr>
+
+
 			<form action="{{ path_for('scheme.add') }}" method="post" autocomplete="off">
 
 				<div class="form-group{{ errors.schemeName ? ' has-error' : '' }}">
@@ -15,914 +17,954 @@
 					{% endif %}
 				</div>
 
-				<label>Trusts Involved</label>
-				<div class="row">
-					<div class="col-md-4">
-					{% for trusts in trust.all %}
-						<div class="checkbox{% if auth.user.trusts_idtrusts == loop.index %}{% endif %}" >
-							<label>
-								<input type="checkbox" name="trust[]" value="{{ trusts.idtrusts }}" {% if loop.index in old.trust or auth.user.trusts_idtrusts == loop.index %}checked{% endif %} {% if auth.user.trusts_idtrusts == loop.index %}{% endif %}> {{ trusts.trust }}
-							</label>
+				<!-- Nav tabs -->
+				<ul class="nav nav-tabs" role="tablist">
+					<li role="presentation" class="active"><a href="#intro" aria-controls="intro" role="tab" data-toggle="tab">Intro</a></li>
+					<li role="presentation"><a href="#partners" aria-controls="partners" role="tab" data-toggle="tab">Partners &amp; Funding</a></li>
+					<li role="presentation"><a href="#designations" aria-controls="designations" role="tab" data-toggle="tab">Designations</a></li>
+					<li role="presentation"><a href="#habitats" aria-controls="habitats" role="tab" data-toggle="tab">Habits</a></li>
+					<li role="presentation"><a href="#species" aria-controls="species" role="tab" data-toggle="tab">Species</a></li>
+					<li role="presentation"><a href="#delivery" aria-controls="delivery" role="tab" data-toggle="tab">Delivery</a></li>
+					<li role="presentation"><a href="#progress" aria-controls="progress" role="tab" data-toggle="tab">Progress</a></li>
+					<li role="presentation"><a href="#benefits" aria-controls="benefits" role="tab" data-toggle="tab">Benefits</a></li>
+				</ul>
+
+				<!-- Tab panes -->
+				<div class="tab-content">
+
+<!-- Intro Tab -->				
+					<div role="tabpanel" class="tab-pane active" id="intro">
+						<h3>&nbsp;</h3>
+						<label>Trusts Involved</label>
+						<div class="row">
+							<div class="col-md-4">
+							{% for trusts in trust.all %}
+								<div class="checkbox{% if auth.user.trusts_idtrusts == loop.index %}{% endif %}" >
+									<label>
+										<input type="checkbox" name="trust[]" value="{{ trusts.idtrusts }}" {% if loop.index in old.trust or auth.user.trusts_idtrusts == loop.index %}checked{% endif %} {% if auth.user.trusts_idtrusts == loop.index %}{% endif %}> {{ trusts.trust }}
+									</label>
+								</div>
+								{% if loop.index is divisible by(16) %}
+									</div>
+									<div class="col-md-4">
+								{% endif %}
+							{% endfor %}
+							</div>
 						</div>
-						{% if loop.index is divisible by(16) %}
+						
+						<hr>
+
+						<div class="row">
+							<div class="col-md-4">
+								<div class="form-group{{ errors.region ? 'has-error' : '' }}">
+									<label for="region">Region</label>
+									<select class="form-control" name="region">
+										<option disabled selected>Region</option>
+										<option value="Scotland">Scotland</option>
+										<option value="North East">North East</option>
+										<option value="North West">North West</option>
+										<option value="Yorkshire and Humber">Yorkshire and Humber</option>
+										<option value="East Midlands">East Midlands</option>
+										<option value="West Midlands">West Midlands</option>
+										<option value="Eastern">Eastern</option>
+										<option value="South East">South East</option>
+										<option value="South West">South West</option>
+										<option value="London">London</option>
+										<option value="Irish Sea">Irish Sea</option>
+									</select>
+								</div>
+
+								<label for="stage">Stage</label>
+								<div class="radio">
+									<label>
+										<input type="radio" name="stage" value="In development" {{ old.stage == 'In development' ? 'checked="checked"' : '' }}> In development
+									</label>
+								</div>
+								<div class="radio">
+									<label>
+										<input type="radio" name="stage" value="Currently active" {{ old.stage == 'Currently active' ? 'checked="checked"' : '' }}> Currently active
+									</label>
+								</div>
+								<div class="radio">
+									<label>
+										<input type="radio" name="stage" value="Complete" {{ old.stage == 'Complete' ? 'checked="checked"' : '' }}> Complete
+									</label>
+								</div>
+							</div>
+
+							<div class="col-md-4">
+								<div class="form-group{{ errors.startDate ? ' has-error' : '' }}">
+									<label for="startDate">Start Date</label>
+									<input type="text" name="startDate" id="startDate" class="form-control" value="{{ old.startDate }}">
+									{% if errors.startDate %}
+										<span class="help-block">{{ errors.startDate | first }}</span>
+									{% endif %}
+								</div>
+								<div class="form-group{{ errors.endDate ? ' has-error' : '' }}">
+									<label for="endDate">End Date</label>
+									<input type="text" name="endDate" id="endDate" class="form-control" value="{{ old.endDate }}">
+									{% if errors.endDate %}
+										<span class="help-block">{{ errors.endDate | first }}</span>
+									{% endif %}
+								</div>
+								<div class="form-group{{ errors.duration ? ' has-error' : '' }}">
+									<label for="duration">Duration</label>
+									<input type="text" name="duration" id="duration" class="form-control" value="{{ old.duration }}">
+									{% if errors.schemeName %}
+										<span class="help-block">{{ errors.duration | first }}</span>
+									{% endif %}
+								</div>
+							</div>
+						</div>
+
+						<hr>
+
+						<div class="row">
+							<div class="col-lg-12">
+								<h3>Contact Details</h3>	
+							</div>
+							
+							<div class="col-md-4">
+								<div class="form-group{{ errors.contactName ? ' has-error' : '' }}">
+									<label for="contactName">Contact Name</label>
+									<input type="text" name="contactName" id="contactName" class="form-control" value="{{ old.contactName }}">
+									{% if errors.contactName %}
+										<span class="help-block">{{ errors.contactName | first }}</span>
+									{% endif %}
+								</div>
+								<div class="form-group{{ errors.contactJobTitle ? ' has-error' : '' }}">
+									<label for="contactJobTitle">Job Title</label>
+									<input type="text" name="contactJobTitle" id="contactJobTitle" class="form-control" value="{{ old.contactJobTitle }}">
+									{% if errors.contactJobTitle %}
+										<span class="help-block">{{ errors.contactJobTitle | first }}</span>
+									{% endif %}
+								</div>	
 							</div>
 							<div class="col-md-4">
-						{% endif %}
-					{% endfor %}
-					</div>
-				</div>
-				
-				<hr>
+								<div class="form-group{{ errors.contactPhone ? ' has-error' : '' }}">
+									<label for="contactPhone">Contact Phone</label>
+									<input type="text" name="contactPhone" id="contactPhone" class="form-control" value="{{ old.contactPhone }}">
+									{% if errors.contactPhone %}
+										<span class="help-block">{{ errors.contactPhone | first }}</span>
+									{% endif %}
+								</div>
+								<div class="form-group{{ errors.contactEmail ? ' has-error' : '' }}">
+									<label for="contactEmail">Contact Email</label>
+									<input type="email" name="contactEmail" id="contactEmail" class="form-control" value="{{ old.contactEmail }}">
+									{% if errors.contactEmail %}
+										<span class="help-block">{{ errors.contactEmail | first }}</span>
+									{% endif %}
+								</div>	
+							</div>						
+						</div>
+						
+						<hr>
 
-				<div class="row">
-					<div class="col-md-4">
-						<div class="form-group{{ errors.region ? 'has-error' : '' }}">
-							<label for="region">Region</label>
-							<select class="form-control" name="region">
-								<option disabled selected>Region</option>
-								<option value="Scotland">Scotland</option>
-								<option value="North East">North East</option>
-								<option value="North West">North West</option>
-								<option value="Yorkshire and Humber">Yorkshire and Humber</option>
-								<option value="East Midlands">East Midlands</option>
-								<option value="West Midlands">West Midlands</option>
-								<option value="Eastern">Eastern</option>
-								<option value="South East">South East</option>
-								<option value="South West">South West</option>
-								<option value="London">London</option>
-								<option value="Irish Sea">Irish Sea</option>
-							</select>
-						</div>
-
-						<label for="stage">Stage</label>
-						<div class="radio">
-							<label>
-								<input type="radio" name="stage" value="In development" {{ old.stage == 'In development' ? 'checked="checked"' : '' }}> In development
-							</label>
-						</div>
-						<div class="radio">
-							<label>
-								<input type="radio" name="stage" value="Currently active" {{ old.stage == 'Currently active' ? 'checked="checked"' : '' }}> Currently active
-							</label>
-						</div>
-						<div class="radio">
-							<label>
-								<input type="radio" name="stage" value="Complete" {{ old.stage == 'Complete' ? 'checked="checked"' : '' }}> Complete
-							</label>
-						</div>
-					</div>
-
-					<div class="col-md-4">
-						<div class="form-group{{ errors.startDate ? ' has-error' : '' }}">
-							<label for="startDate">Start Date</label>
-							<input type="text" name="startDate" id="startDate" class="form-control" value="{{ old.startDate }}">
-							{% if errors.startDate %}
-								<span class="help-block">{{ errors.startDate | first }}</span>
+						<div class="form-group{{ errors.aims ? ' has-error' : '' }}">
+							<label for="aims">Main aims and objectives</label>
+							<textarea name="aims" class="form-control" rows="5">{{ old.aims }}</textarea>
+							{% if errors.aims %}
+								<span class="help-block">{{ errors.aims | first }}</span>
 							{% endif %}
 						</div>
-						<div class="form-group{{ errors.endDate ? ' has-error' : '' }}">
-							<label for="endDate">End Date</label>
-							<input type="text" name="endDate" id="endDate" class="form-control" value="{{ old.endDate }}">
-							{% if errors.endDate %}
-								<span class="help-block">{{ errors.endDate | first }}</span>
-							{% endif %}
-						</div>
-						<div class="form-group{{ errors.duration ? ' has-error' : '' }}">
-							<label for="duration">Duration</label>
-							<input type="text" name="duration" id="duration" class="form-control" value="{{ old.duration }}">
-							{% if errors.schemeName %}
-								<span class="help-block">{{ errors.duration | first }}</span>
-							{% endif %}
-						</div>
-					</div>
-				</div>
 
-				<hr>
+						<hr>
 
-				<div class="row">
-					<div class="col-lg-12">
-						<h3>Contact Details</h3>	
-					</div>
-					
-					<div class="col-md-4">
-						<div class="form-group{{ errors.contactName ? ' has-error' : '' }}">
-							<label for="contactName">Contact Name</label>
-							<input type="text" name="contactName" id="contactName" class="form-control" value="{{ old.contactName }}">
-							{% if errors.contactName %}
-								<span class="help-block">{{ errors.contactName | first }}</span>
-							{% endif %}
-						</div>
-						<div class="form-group{{ errors.contactJobTitle ? ' has-error' : '' }}">
-							<label for="contactJobTitle">Job Title</label>
-							<input type="text" name="contactJobTitle" id="contactJobTitle" class="form-control" value="{{ old.contactJobTitle }}">
-							{% if errors.contactJobTitle %}
-								<span class="help-block">{{ errors.contactJobTitle | first }}</span>
-							{% endif %}
-						</div>	
-					</div>
-					<div class="col-md-4">
-						<div class="form-group{{ errors.contactPhone ? ' has-error' : '' }}">
-							<label for="contactPhone">Contact Phone</label>
-							<input type="text" name="contactPhone" id="contactPhone" class="form-control" value="{{ old.contactPhone }}">
-							{% if errors.contactPhone %}
-								<span class="help-block">{{ errors.contactPhone | first }}</span>
-							{% endif %}
-						</div>
-						<div class="form-group{{ errors.contactEmail ? ' has-error' : '' }}">
-							<label for="contactEmail">Contact Email</label>
-							<input type="email" name="contactEmail" id="contactEmail" class="form-control" value="{{ old.contactEmail }}">
-							{% if errors.contactEmail %}
-								<span class="help-block">{{ errors.contactEmail | first }}</span>
-							{% endif %}
-						</div>	
-					</div>						
-				</div>
-				
-				<hr>
-
-				<div class="form-group{{ errors.aims ? ' has-error' : '' }}">
-					<label for="aims">Main aims and objectives</label>
-					<textarea name="aims" class="form-control" rows="5">{{ old.aims }}</textarea>
-					{% if errors.aims %}
-						<span class="help-block">{{ errors.aims | first }}</span>
-					{% endif %}
-				</div>
-
-				<hr>
-
-				<div class="row">
-					<div class="col-md-12">
-						<h3>Within the scheme boundary</h3>
-					</div>
-					<div class="col-md-4">
 						<div class="row">
 							<div class="col-md-12">
-								<label for="gisLayerSupplied">GIS Layer Provided?</label>
-								<div class="radio">
-									<label>
-										<input type="radio" name="gisLayerSupplied" value="Yes" {{ old.gisLayerSupplied == 'Yes' ? 'checked="checked"' : '' }}> Yes
-									</label>
-								</div>
-								<div class="radio">
-									<label>
-										<input type="radio" name="gisLayerSupplied" value="No" {{ old.gisLayerSupplied == 'No' ? 'checked="checked"' : '' }}> No
-									</label>
-								</div>
-								<div class="radio">
-									<label>
-										<input type="radio" name="gisLayerSupplied" value="Not yet digitised" {{ old.gisLayerSupplied == 'Not yet digitised' ? 'checked="checked"' : '' }}> Not yet digitised
-									</label>
-								</div>
-							</div>
-						</div>		
-					</div>
-					
-					<div class="col-md-4">
-						<div class="form-group{{ errors.sizeHA ? ' has-error' : '' }}">
-							<label for="sizeHA">Scheme area (HA)</label>
-							<input type="number" name="sizeHA" id="sizeHA" class="form-control" value="{{ old.sizeHA }}">
-							{% if errors.sizeHA %}
-								<span class="help-block">{{ errors.sizeHA | first }}</span>
-							{% endif %}
-						</div>
-						<div class="form-group{{ errors.nearestCity ? ' has-error' : '' }}">
-							<label for="nearestCity">Nearest City</label>
-							<input type="text" name="nearestCity" id="nearestCity" class="form-control" value="{{ old.nearestCity }}">
-							{% if errors.nearestCity %}
-								<span class="help-block">{{ errors.nearestCity | first }}</span>
-							{% endif %}
-						</div>
-						<div class="form-group{{ errors.localAuthorityAreas ? ' has-error' : '' }}">
-							<label for="localAuthorityAreas">Local authority areas</label>
-							<input type="text" name="localAuthorityAreas" id="localAuthorityAreas" class="form-control" value="{{ old.localAuthorityAreas }}">
-							{% if errors.localAuthorityAreas %}
-								<span class="help-block">{{ errors.localAuthorityAreas | first }}</span>
-							{% endif %}
-						</div>
-					</div>
-				</div>
-				
-				<hr>
-
-				<div class="row">
-					<div class="col-lg-12">
-						<h3>Partners and funding</h3>
-					</div>
-					<div class="col-md-4">
-					{% for partnercat in partnercats.all %}
-						<label>{{ partnercat.partnerCategory }}</label>
-						{% for partner in partnerss.all if partner.partner_categories_id == partnercat.id %}
-							<div class="checkbox">
-								<label>
-		        					<input type="checkbox" name="partners[]" value="{{ partner.id }}"> {{ partner.partner }}
-		        				</label>
-		        			</div>
-	    				{% endfor %}
-	    				{% if loop.index is divisible by(2) %}
+								<h3>Within the scheme boundary</h3>
 							</div>
 							<div class="col-md-4">
-						{% endif %}
-					{% endfor %}
+								<div class="row">
+									<div class="col-md-12">
+										<label for="gisLayerSupplied">GIS Layer Provided?</label>
+										<div class="radio">
+											<label>
+												<input type="radio" name="gisLayerSupplied" value="Yes" {{ old.gisLayerSupplied == 'Yes' ? 'checked="checked"' : '' }}> Yes
+											</label>
+										</div>
+										<div class="radio">
+											<label>
+												<input type="radio" name="gisLayerSupplied" value="No" {{ old.gisLayerSupplied == 'No' ? 'checked="checked"' : '' }}> No
+											</label>
+										</div>
+										<div class="radio">
+											<label>
+												<input type="radio" name="gisLayerSupplied" value="Not yet digitised" {{ old.gisLayerSupplied == 'Not yet digitised' ? 'checked="checked"' : '' }}> Not yet digitised
+											</label>
+										</div>
+									</div>
+								</div>		
+							</div>
+							
+							<div class="col-md-4">
+								<div class="form-group{{ errors.sizeHA ? ' has-error' : '' }}">
+									<label for="sizeHA">Scheme area (HA)</label>
+									<input type="number" name="sizeHA" id="sizeHA" class="form-control" value="{{ old.sizeHA }}">
+									{% if errors.sizeHA %}
+										<span class="help-block">{{ errors.sizeHA | first }}</span>
+									{% endif %}
+								</div>
+								<div class="form-group{{ errors.nearestCity ? ' has-error' : '' }}">
+									<label for="nearestCity">Nearest City</label>
+									<input type="text" name="nearestCity" id="nearestCity" class="form-control" value="{{ old.nearestCity }}">
+									{% if errors.nearestCity %}
+										<span class="help-block">{{ errors.nearestCity | first }}</span>
+									{% endif %}
+								</div>
+								<div class="form-group{{ errors.localAuthorityAreas ? ' has-error' : '' }}">
+									<label for="localAuthorityAreas">Local authority areas</label>
+									<input type="text" name="localAuthorityAreas" id="localAuthorityAreas" class="form-control" value="{{ old.localAuthorityAreas }}">
+									{% if errors.localAuthorityAreas %}
+										<span class="help-block">{{ errors.localAuthorityAreas | first }}</span>
+									{% endif %}
+								</div>
+							</div>
+						</div>
 					</div>
-					
-					<div class="col-md-12">
-					<br>
-						<table class="table">
-							<thead>
-								<tr>
-									<th>#</th>
-									<th>Funding Partner</th>
-									<th>Amount</th>
-									<th>Timescale</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<td>1</td>
-									<td>
-										<div class="form-group">
-											<select class="form-control" name="funding_sources[0][funding_partner]">
-												<option disabled selected>Funding Partner&hellip;</option>
-												{% for fundingpartnercat in fundingpartnercats.all %}
-													<optgroup label="{{ fundingpartnercat.funding_partner_category }}">
-														{% for fundingpartner in fundingpartners.all if fundingpartner.funding_partner_categories_id == fundingpartnercat.id %}
-															<option value="{{ fundingpartner.id }}">{{ fundingpartner.funding_partner }}</option>		        		
-									    				{% endfor %}
-								    				</optgroup>
-								    			{% endfor %}
-							    			</select>
-							    		</div>
-									</td>
-									<td>
-										<div class="form-group">
-											<input type="text" class="form-control" name="funding_sources[0][amount]">
-										</div>
-									</td>
-									<td>
-										<div class="form-group">
-											<input type="text" class="form-control" name="funding_sources[0][timescale]">
-										</div>
-									</td>
-								</tr>
-								<tr>
-									<td>2</td>
-									<td>
-										<div class="form-group">
-											<select class="form-control" name="funding_sources[1][funding_partner]">
-												<option disabled selected>Funding Partner&hellip;</option>
-												{% for fundingpartnercat in fundingpartnercats.all %}
-													<optgroup label="{{ fundingpartnercat.funding_partner_category }}">
-														{% for fundingpartner in fundingpartners.all if fundingpartner.funding_partner_categories_id == fundingpartnercat.id %}
-															<option value="{{ fundingpartner.id }}">{{ fundingpartner.funding_partner }}</option>		        		
-									    				{% endfor %}
-								    				</optgroup>
-								    			{% endfor %}
-							    			</select>
-							    		</div>
-									</td>
-									<td>
-										<div class="form-group">
-											<input type="text" class="form-control" name="funding_sources[1][amount]">
-										</div>
-									</td>
-									<td>
-										<div class="form-group">
-											<input type="text" class="form-control" name="funding_sources[1][timescale]">
-										</div>
-									</td>
-								</tr>
-								<tr>
-									<td>3</td>
-									<td>
-										<div class="form-group">
-											<select class="form-control" name="funding_sources[2][funding_partner]">
-												<option disabled selected>Funding Partner&hellip;</option>
-												{% for fundingpartnercat in fundingpartnercats.all %}
-													<optgroup label="{{ fundingpartnercat.funding_partner_category }}">
-														{% for fundingpartner in fundingpartners.all if fundingpartner.funding_partner_categories_id == fundingpartnercat.id %}
-															<option value="{{ fundingpartner.id }}">{{ fundingpartner.funding_partner }}</option>		        		
-									    				{% endfor %}
-								    				</optgroup>
-								    			{% endfor %}
-							    			</select>
-							    		</div>
-									</td>
-									<td>
-										<div class="form-group">
-											<input type="text" class="form-control" name="funding_sources[2][amount]">
-										</div>
-									</td>
-									<td>
-										<div class="form-group">
-											<input type="text" class="form-control" name="funding_sources[2][timescale]">
-										</div>
-									</td>
-								</tr>
-								<tr>
-									<td>3</td>
-									<td>
-										<div class="form-group">
-											<select class="form-control" name="funding_sources[3][funding_partner]">
-												<option disabled selected>Funding Partner&hellip;</option>
-												{% for fundingpartnercat in fundingpartnercats.all %}
-													<optgroup label="{{ fundingpartnercat.funding_partner_category }}">
-														{% for fundingpartner in fundingpartners.all if fundingpartner.funding_partner_categories_id == fundingpartnercat.id %}
-															<option value="{{ fundingpartner.id }}">{{ fundingpartner.funding_partner }}</option>		        		
-									    				{% endfor %}
-								    				</optgroup>
-								    			{% endfor %}
-							    			</select>
-							    		</div>
-									</td>
-									<td>
-										<div class="form-group">
-											<input type="text" class="form-control" name="funding_sources[3][amount]">
-										</div>
-									</td>
-									<td>
-										<div class="form-group">
-											<input type="text" class="form-control" name="funding_sources[3][timescale]">
-										</div>
-									</td>
-								</tr>
-								<tr>
-									<td>3</td>
-									<td>
-										<div class="form-group">
-											<select class="form-control" name="funding_sources[4][funding_partner]">
-												<option disabled selected>Funding Partner&hellip;</option>
-												{% for fundingpartnercat in fundingpartnercats.all %}
-													<optgroup label="{{ fundingpartnercat.funding_partner_category }}">
-														{% for fundingpartner in fundingpartners.all if fundingpartner.funding_partner_categories_id == fundingpartnercat.id %}
-															<option value="{{ fundingpartner.id }}">{{ fundingpartner.funding_partner }}</option>		        		
-									    				{% endfor %}
-								    				</optgroup>
-								    			{% endfor %}
-							    			</select>
-							    		</div>
-									</td>
-									<td>
-										<div class="form-group">
-											<input type="text" class="form-control" name="funding_sources[4][amount]">
-										</div>
-									</td>
-									<td>
-										<div class="form-group">
-											<input type="text" class="form-control" name="funding_sources[4][timescale]">
-										</div>
-									</td>
-								</tr>
+<!-- End Intro Tab -->
 
-							</tbody>
-						</table>
-					</div>
-				</div>	
-			
-				<hr>
-
-				<div class="row">
-					<div class="col-md-12">
-						<h3>Habitats</h3>
-					</div>
-					<div class="col-md-4">
-					{% for habcat in habitatcats.all %}
-						<label>{{ habcat.habitat_category }}</label>
-						{% for hab in habitats.all if hab.habitat_categories_id == habcat.id %}
-							<div class="checkbox">
-								<label>
-		        					<input type="checkbox" name="habitats[]" value="{{ hab.id }}"> {{ hab.habitat }}
-		        				</label>
-		        			</div>
-	    				{% endfor %}
-	    				{% if loop.index is divisible by(4) %}
+<!-- Partners Tab -->
+					<div role="tabpanel" class="tab-pane" id="partners">
+						<div class="row">
+							<div class="col-lg-12">
+								<h3>Partners</h3>
 							</div>
 							<div class="col-md-4">
-						{% endif %}
-					{% endfor %}
+							{% for partnercat in partnercats.all %}
+								<label>{{ partnercat.partnerCategory }}</label>
+								{% for partner in partnerss.all if partner.partner_categories_id == partnercat.id %}
+									<div class="checkbox">
+										<label>
+				        					<input type="checkbox" name="partners[]" value="{{ partner.id }}"> {{ partner.partner }}
+				        				</label>
+				        			</div>
+			    				{% endfor %}
+			    				{% if loop.index is divisible by(2) %}
+									</div>
+									<div class="col-md-4">
+								{% endif %}
+							{% endfor %}
+							</div>
+							
+							<div class="col-md-12">
+								<hr>
+								<h3>Funding Sources</h3>
+								<table class="table">
+									<thead>
+										<tr>
+											<th>#</th>
+											<th>Funding Partner</th>
+											<th>Amount</th>
+											<th>Timescale</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td>1</td>
+											<td>
+												<div class="form-group">
+													<select class="form-control" name="funding_sources[0][funding_partner]">
+														<option disabled selected>Funding Partner&hellip;</option>
+														{% for fundingpartnercat in fundingpartnercats.all %}
+															<optgroup label="{{ fundingpartnercat.funding_partner_category }}">
+																{% for fundingpartner in fundingpartners.all if fundingpartner.funding_partner_categories_id == fundingpartnercat.id %}
+																	<option value="{{ fundingpartner.id }}">{{ fundingpartner.funding_partner }}</option>		        		
+											    				{% endfor %}
+										    				</optgroup>
+										    			{% endfor %}
+									    			</select>
+									    		</div>
+											</td>
+											<td>
+												<div class="form-group">
+													<input type="text" class="form-control" name="funding_sources[0][amount]">
+												</div>
+											</td>
+											<td>
+												<div class="form-group">
+													<input type="text" class="form-control" name="funding_sources[0][timescale]">
+												</div>
+											</td>
+										</tr>
+										<tr>
+											<td>2</td>
+											<td>
+												<div class="form-group">
+													<select class="form-control" name="funding_sources[1][funding_partner]">
+														<option disabled selected>Funding Partner&hellip;</option>
+														{% for fundingpartnercat in fundingpartnercats.all %}
+															<optgroup label="{{ fundingpartnercat.funding_partner_category }}">
+																{% for fundingpartner in fundingpartners.all if fundingpartner.funding_partner_categories_id == fundingpartnercat.id %}
+																	<option value="{{ fundingpartner.id }}">{{ fundingpartner.funding_partner }}</option>		        		
+											    				{% endfor %}
+										    				</optgroup>
+										    			{% endfor %}
+									    			</select>
+									    		</div>
+											</td>
+											<td>
+												<div class="form-group">
+													<input type="text" class="form-control" name="funding_sources[1][amount]">
+												</div>
+											</td>
+											<td>
+												<div class="form-group">
+													<input type="text" class="form-control" name="funding_sources[1][timescale]">
+												</div>
+											</td>
+										</tr>
+										<tr>
+											<td>3</td>
+											<td>
+												<div class="form-group">
+													<select class="form-control" name="funding_sources[2][funding_partner]">
+														<option disabled selected>Funding Partner&hellip;</option>
+														{% for fundingpartnercat in fundingpartnercats.all %}
+															<optgroup label="{{ fundingpartnercat.funding_partner_category }}">
+																{% for fundingpartner in fundingpartners.all if fundingpartner.funding_partner_categories_id == fundingpartnercat.id %}
+																	<option value="{{ fundingpartner.id }}">{{ fundingpartner.funding_partner }}</option>		        		
+											    				{% endfor %}
+										    				</optgroup>
+										    			{% endfor %}
+									    			</select>
+									    		</div>
+											</td>
+											<td>
+												<div class="form-group">
+													<input type="text" class="form-control" name="funding_sources[2][amount]">
+												</div>
+											</td>
+											<td>
+												<div class="form-group">
+													<input type="text" class="form-control" name="funding_sources[2][timescale]">
+												</div>
+											</td>
+										</tr>
+										<tr>
+											<td>3</td>
+											<td>
+												<div class="form-group">
+													<select class="form-control" name="funding_sources[3][funding_partner]">
+														<option disabled selected>Funding Partner&hellip;</option>
+														{% for fundingpartnercat in fundingpartnercats.all %}
+															<optgroup label="{{ fundingpartnercat.funding_partner_category }}">
+																{% for fundingpartner in fundingpartners.all if fundingpartner.funding_partner_categories_id == fundingpartnercat.id %}
+																	<option value="{{ fundingpartner.id }}">{{ fundingpartner.funding_partner }}</option>		        		
+											    				{% endfor %}
+										    				</optgroup>
+										    			{% endfor %}
+									    			</select>
+									    		</div>
+											</td>
+											<td>
+												<div class="form-group">
+													<input type="text" class="form-control" name="funding_sources[3][amount]">
+												</div>
+											</td>
+											<td>
+												<div class="form-group">
+													<input type="text" class="form-control" name="funding_sources[3][timescale]">
+												</div>
+											</td>
+										</tr>
+										<tr>
+											<td>3</td>
+											<td>
+												<div class="form-group">
+													<select class="form-control" name="funding_sources[4][funding_partner]">
+														<option disabled selected>Funding Partner&hellip;</option>
+														{% for fundingpartnercat in fundingpartnercats.all %}
+															<optgroup label="{{ fundingpartnercat.funding_partner_category }}">
+																{% for fundingpartner in fundingpartners.all if fundingpartner.funding_partner_categories_id == fundingpartnercat.id %}
+																	<option value="{{ fundingpartner.id }}">{{ fundingpartner.funding_partner }}</option>		        		
+											    				{% endfor %}
+										    				</optgroup>
+										    			{% endfor %}
+									    			</select>
+									    		</div>
+											</td>
+											<td>
+												<div class="form-group">
+													<input type="text" class="form-control" name="funding_sources[4][amount]">
+												</div>
+											</td>
+											<td>
+												<div class="form-group">
+													<input type="text" class="form-control" name="funding_sources[4][timescale]">
+												</div>
+											</td>
+										</tr>
+
+									</tbody>
+								</table>
+							</div>
+						</div>
 					</div>
-				</div>			
-				
-				<div class="form-group{{ errors.region ? 'has-error' : '' }}">
-					<label for="species">Key Species</label> (ctrl+click for multiple)
-					<select class="form-control" name="species[]" multiple size="10">
-					{% for specie in species.all %}
-						<option value="{{ specie.id }}" {% if specie.id in old.species %}selected{% endif %}>{{ specie.species }}</option>
-					{% endfor %}
-					</select>
-				</div>
+<!-- End Partners Tab -->
 
-				<hr>
-				
-				<h3>Delivery Mechanisms</h3>
-				<div class="row">
-					<div class="col-md-12">
-						<h4>Habitats Restored</h4>
-						<table class="table">
-							<thead>
-								<tr>
-									<th>Area</th>
-									<th>Habitat type restored</th>
-									<th>When</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<td>
-										<div class="form-group">
-											<input type="number" class="form-control" name="habitat_restored[0][areaHA]" placeholder="hectares">
-										</div>
-									</td>
-									<td>
-										<div class="form-group">
-											<select class="form-control" name="habitat_restored[0][habitat_id]">
-												<option disabled selected>Habitat type&hellip;</option>
-												{% for habitatcat in habitatcats.all %}
-													<optgroup label="{{ habitatcat.habitat_category }}">
-														{% for habitat in habitats.all if habitat.habitat_categories_id == habitatcat.id %}
-															<option value="{{ habitat.id }}">{{ habitat.habitat }}</option>		        		
-									    				{% endfor %}
-								    				</optgroup>
-								    			{% endfor %}
-							    			</select>
-							    		</div>
-									</td>
-									<td>
-										<div class="form-group">
-											<input type="text" class="form-control" name="habitat_restored[0][date]">
-										</div>
-									</td>
-								</tr>
-								<tr>
-									<td>
-										<div class="form-group">
-											<input type="number" class="form-control" name="habitat_restored[1][areaHA]" placeholder="hectares">
-										</div>
-									</td>
-									<td>
-										<div class="form-group">
-											<select class="form-control" name="habitat_restored[1][habitat_id]">
-												<option disabled selected>Habitat type&hellip;</option>
-												{% for habitatcat in habitatcats.all %}
-													<optgroup label="{{ habitatcat.habitat_category }}">
-														{% for habitat in habitats.all if habitat.habitat_categories_id == habitatcat.id %}
-															<option value="{{ habitat.id }}">{{ habitat.habitat }}</option>		        		
-									    				{% endfor %}
-								    				</optgroup>
-								    			{% endfor %}
-							    			</select>
-							    		</div>
-									</td>
-									<td>
-										<div class="form-group">
-											<input type="text" class="form-control" name="habitat_restored[1][date]">
-										</div>
-									</td>
-								</tr>
-								<tr>
-									<td>
-										<div class="form-group">
-											<input type="number" class="form-control" name="habitat_restored[2][areaHA]" placeholder="hectares">
-										</div>
-									</td>
-									<td>
-										<div class="form-group">
-											<select class="form-control" name="habitat_restored[2][habitat_id]">
-												<option disabled selected>Habitat type&hellip;</option>
-												{% for habitatcat in habitatcats.all %}
-													<optgroup label="{{ habitatcat.habitat_category }}">
-														{% for habitat in habitats.all if habitat.habitat_categories_id == habitatcat.id %}
-															<option value="{{ habitat.id }}">{{ habitat.habitat }}</option>		        		
-									    				{% endfor %}
-								    				</optgroup>
-								    			{% endfor %}
-							    			</select>
-							    		</div>
-									</td>
-									<td>
-										<div class="form-group">
-											<input type="text" class="form-control" name="habitat_restored[2][date]">
-										</div>
-									</td>
-								</tr>
-								<tr>
-									<td>
-										<div class="form-group">
-											<input type="number" class="form-control" name="habitat_restored[3][areaHA]" placeholder="hectares">
-										</div>
-									</td>
-									<td>
-										<div class="form-group">
-											<select class="form-control" name="habitat_restored[3][habitat_id]">
-												<option disabled selected>Habitat type&hellip;</option>
-												{% for habitatcat in habitatcats.all %}
-													<optgroup label="{{ habitatcat.habitat_category }}">
-														{% for habitat in habitats.all if habitat.habitat_categories_id == habitatcat.id %}
-															<option value="{{ habitat.id }}">{{ habitat.habitat }}</option>		        		
-									    				{% endfor %}
-								    				</optgroup>
-								    			{% endfor %}
-							    			</select>
-							    		</div>
-									</td>
-									<td>
-										<div class="form-group">
-											<input type="text" class="form-control" name="habitat_restored[3][date]">
-										</div>
-									</td>
-								</tr>
-								<tr>
-									<td>
-										<div class="form-group">
-											<input type="number" class="form-control" name="habitat_restored[4][areaHA]" placeholder="hectares">
-										</div>
-									</td>
-									<td>
-										<div class="form-group">
-											<select class="form-control" name="habitat_restored[4][habitat_id]">
-												<option disabled selected>Habitat type&hellip;</option>
-												{% for habitatcat in habitatcats.all %}
-													<optgroup label="{{ habitatcat.habitat_category }}">
-														{% for habitat in habitats.all if habitat.habitat_categories_id == habitatcat.id %}
-															<option value="{{ habitat.id }}">{{ habitat.habitat }}</option>		        		
-									    				{% endfor %}
-								    				</optgroup>
-								    			{% endfor %}
-							    			</select>
-							    		</div>
-									</td>
-									<td>
-										<div class="form-group">
-											<input type="text" class="form-control" name="habitat_restored[4][date]">
-										</div>
-									</td>
-								</tr>
-							</tbody>
-						</table>
+<!-- Designations Tab -->				
+					<div role="tabpanel" class="tab-pane" id="designations">ccc</div>
+<!-- End Designations Tab -->
+
+<!-- Habitats Tab -->
+					<div role="tabpanel" class="tab-pane" id="habitats">
+						<div class="row">
+							<div class="col-md-12">
+								<h3>Habitats</h3>
+							</div>
+							<div class="col-md-4">
+							{% for habcat in habitatcats.all %}
+								<label>{{ habcat.habitat_category }}</label>
+								{% for hab in habitats.all if hab.habitat_categories_id == habcat.id %}
+									<div class="checkbox">
+										<label>
+				        					<input type="checkbox" name="habitats[]" value="{{ hab.id }}"> {{ hab.habitat }}
+				        				</label>
+				        			</div>
+			    				{% endfor %}
+			    				{% if loop.index is divisible by(4) %}
+									</div>
+									<div class="col-md-4">
+								{% endif %}
+							{% endfor %}
+							</div>
+						</div>	
 					</div>
+<!-- End Habitats Tab -->
 
-					<div class="col-md-12">
-						<h4>Habitats Created</h4>
-						<table class="table">
-							<thead>
-								<tr>
-									<th>Area</th>
-									<th>Habitat type created</th>
-									<th>When</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<td>
-										<div class="form-group">
-											<input type="number" class="form-control" name="habitat_created[0][areaHA]" placeholder="hectares">
-										</div>
-									</td>
-									<td>
-										<div class="form-group">
-											<select class="form-control" name="habitat_created[0][habitat_id]">
-												<option disabled selected>Habitat type&hellip;</option>
-												{% for habitatcat in habitatcats.all %}
-													<optgroup label="{{ habitatcat.habitat_category }}">
-														{% for habitat in habitats.all if habitat.habitat_categories_id == habitatcat.id %}
-															<option value="{{ habitat.id }}">{{ habitat.habitat }}</option>		        		
-									    				{% endfor %}
-								    				</optgroup>
-								    			{% endfor %}
-							    			</select>
-							    		</div>
-									</td>
-									<td>
-										<div class="form-group">
-											<input type="text" class="form-control" name="habitat_created[0][date]">
-										</div>
-									</td>
-								</tr>
-								<tr>
-									<td>
-										<div class="form-group">
-											<input type="number" class="form-control" name="habitat_created[1][areaHA]" placeholder="hectares">
-										</div>
-									</td>
-									<td>
-										<div class="form-group">
-											<select class="form-control" name="habitat_created[1][habitat_id]">
-												<option disabled selected>Habitat type&hellip;</option>
-												{% for habitatcat in habitatcats.all %}
-													<optgroup label="{{ habitatcat.habitat_category }}">
-														{% for habitat in habitats.all if habitat.habitat_categories_id == habitatcat.id %}
-															<option value="{{ habitat.id }}">{{ habitat.habitat }}</option>		        		
-									    				{% endfor %}
-								    				</optgroup>
-								    			{% endfor %}
-							    			</select>
-							    		</div>
-									</td>
-									<td>
-										<div class="form-group">
-											<input type="text" class="form-control" name="habitat_created[1][date]">
-										</div>
-									</td>
-								</tr>
-								<tr>
-									<td>
-										<div class="form-group">
-											<input type="number" class="form-control" name="habitat_created[2][areaHA]" placeholder="hectares">
-										</div>
-									</td>
-									<td>
-										<div class="form-group">
-											<select class="form-control" name="habitat_created[2][habitat_id]">
-												<option disabled selected>Habitat type&hellip;</option>
-												{% for habitatcat in habitatcats.all %}
-													<optgroup label="{{ habitatcat.habitat_category }}">
-														{% for habitat in habitats.all if habitat.habitat_categories_id == habitatcat.id %}
-															<option value="{{ habitat.id }}">{{ habitat.habitat }}</option>		        		
-									    				{% endfor %}
-								    				</optgroup>
-								    			{% endfor %}
-							    			</select>
-							    		</div>
-									</td>
-									<td>
-										<div class="form-group">
-											<input type="text" class="form-control" name="habitat_created[2][date]">
-										</div>
-									</td>
-								</tr>
-								<tr>
-									<td>
-										<div class="form-group">
-											<input type="number" class="form-control" name="habitat_created[3][areaHA]" placeholder="hectares">
-										</div>
-									</td>
-									<td>
-										<div class="form-group">
-											<select class="form-control" name="habitat_created[3][habitat_id]">
-												<option disabled selected>Habitat type&hellip;</option>
-												{% for habitatcat in habitatcats.all %}
-													<optgroup label="{{ habitatcat.habitat_category }}">
-														{% for habitat in habitats.all if habitat.habitat_categories_id == habitatcat.id %}
-															<option value="{{ habitat.id }}">{{ habitat.habitat }}</option>		        		
-									    				{% endfor %}
-								    				</optgroup>
-								    			{% endfor %}
-							    			</select>
-							    		</div>
-									</td>
-									<td>
-										<div class="form-group">
-											<input type="text" class="form-control" name="habitat_created[3][date]">
-										</div>
-									</td>
-								</tr>
-								<tr>
-									<td>
-										<div class="form-group">
-											<input type="number" class="form-control" name="habitat_created[4][areaHA]" placeholder="hectares">
-										</div>
-									</td>
-									<td>
-										<div class="form-group">
-											<select class="form-control" name="habitat_created[4][habitat_id]">
-												<option disabled selected>Habitat type&hellip;</option>
-												{% for habitatcat in habitatcats.all %}
-													<optgroup label="{{ habitatcat.habitat_category }}">
-														{% for habitat in habitats.all if habitat.habitat_categories_id == habitatcat.id %}
-															<option value="{{ habitat.id }}">{{ habitat.habitat }}</option>		        		
-									    				{% endfor %}
-								    				</optgroup>
-								    			{% endfor %}
-							    			</select>
-							    		</div>
-									</td>
-									<td>
-										<div class="form-group">
-											<input type="text" class="form-control" name="habitat_created[4][date]">
-										</div>
-									</td>
-								</tr>
-							</tbody>
-						</table>
+<!-- Species Tab -->
+					<div role="tabpanel" class="tab-pane" id="species">
+						<h3>Key Species</h3>
+						<div class="form-group{{ errors.region ? 'has-error' : '' }}">
+							<label for="species">(ctrl+click for multiple)</label> 
+							<select class="form-control" name="species[]" multiple size="30">
+							{% for specie in species.all %}
+								<option value="{{ specie.id }}" {% if specie.id in old.species %}selected{% endif %}>{{ specie.species }}</option>
+							{% endfor %}
+							</select>
+						</div>
 					</div>
-				</div>
-				<div class="form-group{{ errors.deliveryLandOwnerAdvice ? ' has-error' : '' }}">
-					<label for="deliveryLandOwnerAdvice">Land Owner Advice</label>
-					<textarea name="deliveryLandOwnerAdvice" class="form-control" rows="5">{{ old.deliveryLandOwnerAdvice }}</textarea>
-					{% if errors.deliveryLandOwnerAdvice %}
-						<span class="help-block">{{ errors.deliveryLandOwnerAdvice | first }}</span>
-					{% endif %}
-				</div>
-				<div class="form-group{{ errors.deliveryManagementAgreements ? ' has-error' : '' }}">
-					<label for="deliveryManagementAgreements">Management Agreements</label>
-					<textarea name="deliveryManagementAgreements" class="form-control" rows="5">{{ old.deliveryManagementAgreements }}</textarea>
-					{% if errors.deliveryManagementAgreements %}
-						<span class="help-block">{{ errors.deliveryManagementAgreements | first }}</span>
-					{% endif %}
-				</div>
-				<div class="form-group{{ errors.deliveryAgriEnvironmentalSchemes ? ' has-error' : '' }}">
-					<label for="deliveryAgriEnvironmentalSchemes">Agri Environmental Schemes</label>
-					<textarea name="deliveryAgriEnvironmentalSchemes" class="form-control" rows="5">{{ old.deliveryAgriEnvironmentalSchemes }}</textarea>
-					{% if errors.deliveryAgriEnvironmentalSchemes %}
-						<span class="help-block">{{ errors.deliveryAgriEnvironmentalSchemes | first }}</span>
-					{% endif %}
-				</div>
-				<div class="form-group{{ errors.deliveryLandAcquisition ? ' has-error' : '' }}">
-					<label for="deliveryLandAcquisition">Land Acquisition</label>
-					<textarea name="deliveryLandAcquisition" class="form-control" rows="5">{{ old.deliveryLandAcquisition }}</textarea>
-					{% if errors.deliveryLandAcquisitions %}
-						<span class="help-block">{{ errors.deliveryLandAcquisition | first }}</span>
-					{% endif %}
-				</div>
-				<div class="form-group{{ errors.deliveryGrazingSchemes ? ' has-error' : '' }}">
-					<label for="deliveryGrazingSchemes">Grazing Schemes</label>
-					<textarea name="deliveryGrazingSchemes" class="form-control" rows="5">{{ old.deliveryGrazingSchemes }}</textarea>
-					{% if errors.deliveryGrazingSchemes %}
-						<span class="help-block">{{ errors.deliveryGrazingSchemes | first }}</span>
-					{% endif %}
-				</div>
-				<div class="form-group{{ errors.deliveryManagementRealignment ? ' has-error' : '' }}">
-					<label for="deliveryManagementRealignment">Managed Realignment</label>
-					<textarea name="deliveryManagementRealignment" class="form-control" rows="5">{{ old.deliveryManagementRealignment }}</textarea>
-					{% if errors.deliveryManagementRealignment %}
-						<span class="help-block">{{ errors.deliveryManagementRealignment | first }}</span>
-					{% endif %}
-				</div>
-				<div class="form-group{{ errors.deliveryCommunityEngagement ? ' has-error' : '' }}">
-					<label for="deliveryCommunityEngagement">Community Engagement</label>
-					<textarea name="deliveryCommunityEngagement" class="form-control" rows="5">{{ old.deliveryCommunityEngagement }}</textarea>
-					{% if errors.deliveryCommunityEngagement %}
-						<span class="help-block">{{ errors.deliveryCommunityEngagement | first }}</span>
-					{% endif %}
-				</div>
-				<div class="form-group{{ errors.deliveryMonitoringDetails ? ' has-error' : '' }}">
-					<label for="deliveryMonitoringDetails">Details of any monitoring in place</label>
-					<textarea name="deliveryMonitoringDetails" class="form-control" rows="5">{{ old.deliveryMonitoringDetails }}</textarea>
-					{% if errors.deliveryMonitoringDetails %}
-						<span class="help-block">{{ errors.deliveryMonitoringDetails | first }}</span>
-					{% endif %}
-				</div>
+<!-- End Species Tab -->
 
-				<hr>
+<!-- Delivery Tab -->
+					<div role="tabpanel" class="tab-pane" id="delivery">
+						<h3>Delivery Mechanisms</h3>
+						<div class="row">
+							<div class="col-md-12">
+								<h4>Habitats Restored</h4>
+								<table class="table">
+									<thead>
+										<tr>
+											<th>Area</th>
+											<th>Habitat type restored</th>
+											<th>When</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td>
+												<div class="form-group">
+													<input type="number" class="form-control" name="habitat_restored[0][areaHA]" placeholder="hectares">
+												</div>
+											</td>
+											<td>
+												<div class="form-group">
+													<select class="form-control" name="habitat_restored[0][habitat_id]">
+														<option disabled selected>Habitat type&hellip;</option>
+														{% for habitatcat in habitatcats.all %}
+															<optgroup label="{{ habitatcat.habitat_category }}">
+																{% for habitat in habitats.all if habitat.habitat_categories_id == habitatcat.id %}
+																	<option value="{{ habitat.id }}">{{ habitat.habitat }}</option>		        		
+											    				{% endfor %}
+										    				</optgroup>
+										    			{% endfor %}
+									    			</select>
+									    		</div>
+											</td>
+											<td>
+												<div class="form-group">
+													<input type="text" class="form-control" name="habitat_restored[0][date]">
+												</div>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<div class="form-group">
+													<input type="number" class="form-control" name="habitat_restored[1][areaHA]" placeholder="hectares">
+												</div>
+											</td>
+											<td>
+												<div class="form-group">
+													<select class="form-control" name="habitat_restored[1][habitat_id]">
+														<option disabled selected>Habitat type&hellip;</option>
+														{% for habitatcat in habitatcats.all %}
+															<optgroup label="{{ habitatcat.habitat_category }}">
+																{% for habitat in habitats.all if habitat.habitat_categories_id == habitatcat.id %}
+																	<option value="{{ habitat.id }}">{{ habitat.habitat }}</option>		        		
+											    				{% endfor %}
+										    				</optgroup>
+										    			{% endfor %}
+									    			</select>
+									    		</div>
+											</td>
+											<td>
+												<div class="form-group">
+													<input type="text" class="form-control" name="habitat_restored[1][date]">
+												</div>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<div class="form-group">
+													<input type="number" class="form-control" name="habitat_restored[2][areaHA]" placeholder="hectares">
+												</div>
+											</td>
+											<td>
+												<div class="form-group">
+													<select class="form-control" name="habitat_restored[2][habitat_id]">
+														<option disabled selected>Habitat type&hellip;</option>
+														{% for habitatcat in habitatcats.all %}
+															<optgroup label="{{ habitatcat.habitat_category }}">
+																{% for habitat in habitats.all if habitat.habitat_categories_id == habitatcat.id %}
+																	<option value="{{ habitat.id }}">{{ habitat.habitat }}</option>		        		
+											    				{% endfor %}
+										    				</optgroup>
+										    			{% endfor %}
+									    			</select>
+									    		</div>
+											</td>
+											<td>
+												<div class="form-group">
+													<input type="text" class="form-control" name="habitat_restored[2][date]">
+												</div>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<div class="form-group">
+													<input type="number" class="form-control" name="habitat_restored[3][areaHA]" placeholder="hectares">
+												</div>
+											</td>
+											<td>
+												<div class="form-group">
+													<select class="form-control" name="habitat_restored[3][habitat_id]">
+														<option disabled selected>Habitat type&hellip;</option>
+														{% for habitatcat in habitatcats.all %}
+															<optgroup label="{{ habitatcat.habitat_category }}">
+																{% for habitat in habitats.all if habitat.habitat_categories_id == habitatcat.id %}
+																	<option value="{{ habitat.id }}">{{ habitat.habitat }}</option>		        		
+											    				{% endfor %}
+										    				</optgroup>
+										    			{% endfor %}
+									    			</select>
+									    		</div>
+											</td>
+											<td>
+												<div class="form-group">
+													<input type="text" class="form-control" name="habitat_restored[3][date]">
+												</div>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<div class="form-group">
+													<input type="number" class="form-control" name="habitat_restored[4][areaHA]" placeholder="hectares">
+												</div>
+											</td>
+											<td>
+												<div class="form-group">
+													<select class="form-control" name="habitat_restored[4][habitat_id]">
+														<option disabled selected>Habitat type&hellip;</option>
+														{% for habitatcat in habitatcats.all %}
+															<optgroup label="{{ habitatcat.habitat_category }}">
+																{% for habitat in habitats.all if habitat.habitat_categories_id == habitatcat.id %}
+																	<option value="{{ habitat.id }}">{{ habitat.habitat }}</option>		        		
+											    				{% endfor %}
+										    				</optgroup>
+										    			{% endfor %}
+									    			</select>
+									    		</div>
+											</td>
+											<td>
+												<div class="form-group">
+													<input type="text" class="form-control" name="habitat_restored[4][date]">
+												</div>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
 
-				<h3>Progress</h3>
+							<div class="col-md-12">
+								<h4>Habitats Created</h4>
+								<table class="table">
+									<thead>
+										<tr>
+											<th>Area</th>
+											<th>Habitat type created</th>
+											<th>When</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td>
+												<div class="form-group">
+													<input type="number" class="form-control" name="habitat_created[0][areaHA]" placeholder="hectares">
+												</div>
+											</td>
+											<td>
+												<div class="form-group">
+													<select class="form-control" name="habitat_created[0][habitat_id]">
+														<option disabled selected>Habitat type&hellip;</option>
+														{% for habitatcat in habitatcats.all %}
+															<optgroup label="{{ habitatcat.habitat_category }}">
+																{% for habitat in habitats.all if habitat.habitat_categories_id == habitatcat.id %}
+																	<option value="{{ habitat.id }}">{{ habitat.habitat }}</option>		        		
+											    				{% endfor %}
+										    				</optgroup>
+										    			{% endfor %}
+									    			</select>
+									    		</div>
+											</td>
+											<td>
+												<div class="form-group">
+													<input type="text" class="form-control" name="habitat_created[0][date]">
+												</div>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<div class="form-group">
+													<input type="number" class="form-control" name="habitat_created[1][areaHA]" placeholder="hectares">
+												</div>
+											</td>
+											<td>
+												<div class="form-group">
+													<select class="form-control" name="habitat_created[1][habitat_id]">
+														<option disabled selected>Habitat type&hellip;</option>
+														{% for habitatcat in habitatcats.all %}
+															<optgroup label="{{ habitatcat.habitat_category }}">
+																{% for habitat in habitats.all if habitat.habitat_categories_id == habitatcat.id %}
+																	<option value="{{ habitat.id }}">{{ habitat.habitat }}</option>		        		
+											    				{% endfor %}
+										    				</optgroup>
+										    			{% endfor %}
+									    			</select>
+									    		</div>
+											</td>
+											<td>
+												<div class="form-group">
+													<input type="text" class="form-control" name="habitat_created[1][date]">
+												</div>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<div class="form-group">
+													<input type="number" class="form-control" name="habitat_created[2][areaHA]" placeholder="hectares">
+												</div>
+											</td>
+											<td>
+												<div class="form-group">
+													<select class="form-control" name="habitat_created[2][habitat_id]">
+														<option disabled selected>Habitat type&hellip;</option>
+														{% for habitatcat in habitatcats.all %}
+															<optgroup label="{{ habitatcat.habitat_category }}">
+																{% for habitat in habitats.all if habitat.habitat_categories_id == habitatcat.id %}
+																	<option value="{{ habitat.id }}">{{ habitat.habitat }}</option>		        		
+											    				{% endfor %}
+										    				</optgroup>
+										    			{% endfor %}
+									    			</select>
+									    		</div>
+											</td>
+											<td>
+												<div class="form-group">
+													<input type="text" class="form-control" name="habitat_created[2][date]">
+												</div>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<div class="form-group">
+													<input type="number" class="form-control" name="habitat_created[3][areaHA]" placeholder="hectares">
+												</div>
+											</td>
+											<td>
+												<div class="form-group">
+													<select class="form-control" name="habitat_created[3][habitat_id]">
+														<option disabled selected>Habitat type&hellip;</option>
+														{% for habitatcat in habitatcats.all %}
+															<optgroup label="{{ habitatcat.habitat_category }}">
+																{% for habitat in habitats.all if habitat.habitat_categories_id == habitatcat.id %}
+																	<option value="{{ habitat.id }}">{{ habitat.habitat }}</option>		        		
+											    				{% endfor %}
+										    				</optgroup>
+										    			{% endfor %}
+									    			</select>
+									    		</div>
+											</td>
+											<td>
+												<div class="form-group">
+													<input type="text" class="form-control" name="habitat_created[3][date]">
+												</div>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<div class="form-group">
+													<input type="number" class="form-control" name="habitat_created[4][areaHA]" placeholder="hectares">
+												</div>
+											</td>
+											<td>
+												<div class="form-group">
+													<select class="form-control" name="habitat_created[4][habitat_id]">
+														<option disabled selected>Habitat type&hellip;</option>
+														{% for habitatcat in habitatcats.all %}
+															<optgroup label="{{ habitatcat.habitat_category }}">
+																{% for habitat in habitats.all if habitat.habitat_categories_id == habitatcat.id %}
+																	<option value="{{ habitat.id }}">{{ habitat.habitat }}</option>		        		
+											    				{% endfor %}
+										    				</optgroup>
+										    			{% endfor %}
+									    			</select>
+									    		</div>
+											</td>
+											<td>
+												<div class="form-group">
+													<input type="text" class="form-control" name="habitat_created[4][date]">
+												</div>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<div class="form-group{{ errors.deliveryLandOwnerAdvice ? ' has-error' : '' }}">
+							<label for="deliveryLandOwnerAdvice">Land Owner Advice</label>
+							<textarea name="deliveryLandOwnerAdvice" class="form-control" rows="5">{{ old.deliveryLandOwnerAdvice }}</textarea>
+							{% if errors.deliveryLandOwnerAdvice %}
+								<span class="help-block">{{ errors.deliveryLandOwnerAdvice | first }}</span>
+							{% endif %}
+						</div>
+						<div class="form-group{{ errors.deliveryManagementAgreements ? ' has-error' : '' }}">
+							<label for="deliveryManagementAgreements">Management Agreements</label>
+							<textarea name="deliveryManagementAgreements" class="form-control" rows="5">{{ old.deliveryManagementAgreements }}</textarea>
+							{% if errors.deliveryManagementAgreements %}
+								<span class="help-block">{{ errors.deliveryManagementAgreements | first }}</span>
+							{% endif %}
+						</div>
+						<div class="form-group{{ errors.deliveryAgriEnvironmentalSchemes ? ' has-error' : '' }}">
+							<label for="deliveryAgriEnvironmentalSchemes">Agri Environmental Schemes</label>
+							<textarea name="deliveryAgriEnvironmentalSchemes" class="form-control" rows="5">{{ old.deliveryAgriEnvironmentalSchemes }}</textarea>
+							{% if errors.deliveryAgriEnvironmentalSchemes %}
+								<span class="help-block">{{ errors.deliveryAgriEnvironmentalSchemes | first }}</span>
+							{% endif %}
+						</div>
+						<div class="form-group{{ errors.deliveryLandAcquisition ? ' has-error' : '' }}">
+							<label for="deliveryLandAcquisition">Land Acquisition</label>
+							<textarea name="deliveryLandAcquisition" class="form-control" rows="5">{{ old.deliveryLandAcquisition }}</textarea>
+							{% if errors.deliveryLandAcquisitions %}
+								<span class="help-block">{{ errors.deliveryLandAcquisition | first }}</span>
+							{% endif %}
+						</div>
+						<div class="form-group{{ errors.deliveryGrazingSchemes ? ' has-error' : '' }}">
+							<label for="deliveryGrazingSchemes">Grazing Schemes</label>
+							<textarea name="deliveryGrazingSchemes" class="form-control" rows="5">{{ old.deliveryGrazingSchemes }}</textarea>
+							{% if errors.deliveryGrazingSchemes %}
+								<span class="help-block">{{ errors.deliveryGrazingSchemes | first }}</span>
+							{% endif %}
+						</div>
+						<div class="form-group{{ errors.deliveryManagementRealignment ? ' has-error' : '' }}">
+							<label for="deliveryManagementRealignment">Managed Realignment</label>
+							<textarea name="deliveryManagementRealignment" class="form-control" rows="5">{{ old.deliveryManagementRealignment }}</textarea>
+							{% if errors.deliveryManagementRealignment %}
+								<span class="help-block">{{ errors.deliveryManagementRealignment | first }}</span>
+							{% endif %}
+						</div>
+						<div class="form-group{{ errors.deliveryCommunityEngagement ? ' has-error' : '' }}">
+							<label for="deliveryCommunityEngagement">Community Engagement</label>
+							<textarea name="deliveryCommunityEngagement" class="form-control" rows="5">{{ old.deliveryCommunityEngagement }}</textarea>
+							{% if errors.deliveryCommunityEngagement %}
+								<span class="help-block">{{ errors.deliveryCommunityEngagement | first }}</span>
+							{% endif %}
+						</div>
+						<div class="form-group{{ errors.deliveryMonitoringDetails ? ' has-error' : '' }}">
+							<label for="deliveryMonitoringDetails">Details of any monitoring in place</label>
+							<textarea name="deliveryMonitoringDetails" class="form-control" rows="5">{{ old.deliveryMonitoringDetails }}</textarea>
+							{% if errors.deliveryMonitoringDetails %}
+								<span class="help-block">{{ errors.deliveryMonitoringDetails | first }}</span>
+							{% endif %}
+						</div>
+					</div>
+<!-- End Delivery Tab -->
 
-				<div class="form-group{{ errors.progressSchemeProgress ? ' has-error' : '' }}">
-					<label for="progressSchemeProgress">Scheme progress and measures of success:</label>
-					<textarea name="progressSchemeProgress" class="form-control" rows="15">{{ old.progressSchemeProgress }}</textarea>
-					{% if errors.progressSchemeProgress %}
-						<span class="help-block">{{ errors.progressSchemeProgress | first }}</span>
-					{% endif %}
-				</div>
-				<div class="form-group{{ errors.schemeWebsite ? ' has-error' : '' }}">
-					<label for="schemeWebsite">Scheme Website</label>
-					<input type="text" name="schemeWebsite" id="schemeWebsite" class="form-control" value="{{ old.schemeWebsite }}">
-					{% if errors.schemeWebsite %}
-						<span class="help-block">{{ errors.schemeWebsite | first }}</span>
-					{% endif %}
-				</div>
-				<div class="form-group{{ errors.progressSchemeOutputs ? ' has-error' : '' }}">
-					<label for="progressSchemeOutputs">Scheme outputs (eg publications, management plans):</label>
-					<textarea name="progressSchemeOutputs" class="form-control" rows="5">{{ old.progressSchemeOutputs }}</textarea>
-					{% if errors.progressSchemeOutputs %}
-						<span class="help-block">{{ errors.progressSchemeOutputs | first }}</span>
-					{% endif %}
-				</div>
-				<div class="form-group{{ errors.progressDeliveryBarrier ? ' has-error' : '' }}">
-					<label for="progressDeliveryBarrier">Barriers to delivery (excluding funding):</label>
-					<textarea name="progressDeliveryBarrier" class="form-control" rows="5">{{ old.progressDeliveryBarrier }}</textarea>
-					{% if errors.progressDeliveryBarrier %}
-						<span class="help-block">{{ errors.progressDeliveryBarrier | first }}</span>
-					{% endif %}
-				</div>
+<!-- Progress tab -->
+					<div role="tabpanel" class="tab-pane" id="progress">
+						<h3>Progress</h3>
+						<div class="form-group{{ errors.progressSchemeProgress ? ' has-error' : '' }}">
+							<label for="progressSchemeProgress">Scheme progress and measures of success:</label>
+							<textarea name="progressSchemeProgress" class="form-control" rows="15">{{ old.progressSchemeProgress }}</textarea>
+							{% if errors.progressSchemeProgress %}
+								<span class="help-block">{{ errors.progressSchemeProgress | first }}</span>
+							{% endif %}
+						</div>
+						<div class="form-group{{ errors.schemeWebsite ? ' has-error' : '' }}">
+							<label for="schemeWebsite">Scheme Website</label>
+							<input type="text" name="schemeWebsite" id="schemeWebsite" class="form-control" value="{{ old.schemeWebsite }}">
+							{% if errors.schemeWebsite %}
+								<span class="help-block">{{ errors.schemeWebsite | first }}</span>
+							{% endif %}
+						</div>
+						<div class="form-group{{ errors.progressSchemeOutputs ? ' has-error' : '' }}">
+							<label for="progressSchemeOutputs">Scheme outputs (eg publications, management plans):</label>
+							<textarea name="progressSchemeOutputs" class="form-control" rows="5">{{ old.progressSchemeOutputs }}</textarea>
+							{% if errors.progressSchemeOutputs %}
+								<span class="help-block">{{ errors.progressSchemeOutputs | first }}</span>
+							{% endif %}
+						</div>
+						<div class="form-group{{ errors.progressDeliveryBarrier ? ' has-error' : '' }}">
+							<label for="progressDeliveryBarrier">Barriers to delivery (excluding funding):</label>
+							<textarea name="progressDeliveryBarrier" class="form-control" rows="5">{{ old.progressDeliveryBarrier }}</textarea>
+							{% if errors.progressDeliveryBarrier %}
+								<span class="help-block">{{ errors.progressDeliveryBarrier | first }}</span>
+							{% endif %}
+						</div>
+					</div>
+<!-- End progress tab -->
 
-				<hr>
+<!-- Benefits tab -->
+					<div role="tabpanel" class="tab-pane" id="benefits">
+						<h3>Ecosystem services provided</h3>
+						<div class="form-group{{ errors.benefitClimateChange ? ' has-error' : '' }}">
+							<label for="benefitClimateChange">Climate change adaption</label>
+							<textarea name="benefitClimateChange" class="form-control" rows="5">{{ old.benefitClimateChange }}</textarea>
+							{% if errors.benefitClimateChange %}
+								<span class="help-block">{{ errors.benefitClimateChange | first }}</span>
+							{% endif %}
+						</div>
+						<div class="form-group{{ errors.benefitWaterQuality ? ' has-error' : '' }}">
+							<label for="benefitWaterQuality">Water quality improvement</label>
+							<textarea name="benefitWaterQuality" class="form-control" rows="5">{{ old.benefitWaterQuality }}</textarea>
+							{% if errors.benefitWaterQuality %}
+								<span class="help-block">{{ errors.benefitWaterQuality | first }}</span>
+							{% endif %}
+						</div>
+						<div class="form-group{{ errors.benefitReducedFloodRisk ? ' has-error' : '' }}">
+							<label for="benefitReducedFloodRisk">Reduced flood risk</label>
+							<textarea name="benefitReducedFloodRisk" class="form-control" rows="5">{{ old.benefitReducedFloodRisk }}</textarea>
+							{% if errors.benefitReducedFloodRisk %}
+								<span class="help-block">{{ errors.benefitReducedFloodRisk | first }}</span>
+							{% endif %}
+						</div>
+						<div class="form-group{{ errors.benefitCarbonStorage ? ' has-error' : '' }}">
+							<label for="benefitCarbonStorage">Carbon storage</label>
+							<textarea name="benefitCarbonStorage" class="form-control" rows="5">{{ old.benefitCarbonStorage }}</textarea>
+							{% if errors.benefitCarbonStorage %}
+								<span class="help-block">{{ errors.benefitCarbonStorage | first }}</span>
+							{% endif %}
+						</div>
+						<div class="form-group{{ errors.benefitAirQuality ? ' has-error' : '' }}">
+							<label for="benefitAirQuality">Air quality improvement</label>
+							<textarea name="benefitAirQuality" class="form-control" rows="5">{{ old.benefitAirQuality }}</textarea>
+							{% if errors.benefitAirQuality %}
+								<span class="help-block">{{ errors.benefitAirQuality | first }}</span>
+							{% endif %}
+						</div>
+						<div class="form-group{{ errors.benefitHabitatProvision ? ' has-error' : '' }}">
+							<label for="benefitHabitatProvision">Provision of habitat for pollinating insects</label>
+							<textarea name="benefitHabitatProvision" class="form-control" rows="5">{{ old.benefitHabitatProvision }}</textarea>
+							{% if errors.benefitHabitatProvision %}
+								<span class="help-block">{{ errors.benefitHabitatProvision | first }}</span>
+							{% endif %}
+						</div>
 
-				<h3>Ecosystem services provided</h3>
-				<div class="form-group{{ errors.benefitClimateChange ? ' has-error' : '' }}">
-					<label for="benefitClimateChange">Climate change adaption</label>
-					<textarea name="benefitClimateChange" class="form-control" rows="5">{{ old.benefitClimateChange }}</textarea>
-					{% if errors.benefitClimateChange %}
-						<span class="help-block">{{ errors.benefitClimateChange | first }}</span>
-					{% endif %}
-				</div>
-				<div class="form-group{{ errors.benefitWaterQuality ? ' has-error' : '' }}">
-					<label for="benefitWaterQuality">Water quality improvement</label>
-					<textarea name="benefitWaterQuality" class="form-control" rows="5">{{ old.benefitWaterQuality }}</textarea>
-					{% if errors.benefitWaterQuality %}
-						<span class="help-block">{{ errors.benefitWaterQuality | first }}</span>
-					{% endif %}
-				</div>
-				<div class="form-group{{ errors.benefitReducedFloodRisk ? ' has-error' : '' }}">
-					<label for="benefitReducedFloodRisk">Reduced flood risk</label>
-					<textarea name="benefitReducedFloodRisk" class="form-control" rows="5">{{ old.benefitReducedFloodRisk }}</textarea>
-					{% if errors.benefitReducedFloodRisk %}
-						<span class="help-block">{{ errors.benefitReducedFloodRisk | first }}</span>
-					{% endif %}
-				</div>
-				<div class="form-group{{ errors.benefitCarbonStorage ? ' has-error' : '' }}">
-					<label for="benefitCarbonStorage">Carbon storage</label>
-					<textarea name="benefitCarbonStorage" class="form-control" rows="5">{{ old.benefitCarbonStorage }}</textarea>
-					{% if errors.benefitCarbonStorage %}
-						<span class="help-block">{{ errors.benefitCarbonStorage | first }}</span>
-					{% endif %}
-				</div>
-				<div class="form-group{{ errors.benefitAirQuality ? ' has-error' : '' }}">
-					<label for="benefitAirQuality">Air quality improvement</label>
-					<textarea name="benefitAirQuality" class="form-control" rows="5">{{ old.benefitAirQuality }}</textarea>
-					{% if errors.benefitAirQuality %}
-						<span class="help-block">{{ errors.benefitAirQuality | first }}</span>
-					{% endif %}
-				</div>
-				<div class="form-group{{ errors.benefitHabitatProvision ? ' has-error' : '' }}">
-					<label for="benefitHabitatProvision">Provision of habitat for pollinating insects</label>
-					<textarea name="benefitHabitatProvision" class="form-control" rows="5">{{ old.benefitHabitatProvision }}</textarea>
-					{% if errors.benefitHabitatProvision %}
-						<span class="help-block">{{ errors.benefitHabitatProvision | first }}</span>
-					{% endif %}
-				</div>
+						<hr>
 
-				<hr>
-
-				<h3>Socio-economic benefits provided</h3>
-				<div class="form-group{{ errors.benefitImprovedAccess ? ' has-error' : '' }}">
-					<label for="benefitImprovedAccess">Improved access for people</label>
-					<textarea name="benefitImprovedAccess" class="form-control" rows="5">{{ old.benefitImprovedAccess }}</textarea>
-					{% if errors.benefitImprovedAccess %}
-						<span class="help-block">{{ errors.benefitImprovedAccess | first }}</span>
-					{% endif %}
-				</div>
-				<div class="form-group{{ errors.benefitRecreationalOpportunities ? ' has-error' : '' }}">
-					<label for="benefitRecreationalOpportunities">Recreational opportunities</label>
-					<textarea name="benefitRecreationalOpportunities" class="form-control" rows="5">{{ old.benefitRecreationalOpportunities }}</textarea>
-					{% if errors.benefitRecreationalOpportunities %}
-						<span class="help-block">{{ errors.benefitRecreationalOpportunities | first }}</span>
-					{% endif %}
-				</div>
-				<div class="form-group{{ errors.benefitGreenTourism ? ' has-error' : '' }}">
-					<label for="benefitGreenTourism">Green tourism</label>
-					<textarea name="benefitGreenTourism" class="form-control" rows="5">{{ old.benefitGreenTourism }}</textarea>
-					{% if errors.benefitGreenTourism %}
-						<span class="help-block">{{ errors.benefitGreenTourism | first }}</span>
-					{% endif %}
-				</div>
-				<div class="form-group{{ errors.benefitHealth ? ' has-error' : '' }}">
-					<label for="benefitHealth">Health benefits</label>
-					<textarea name="benefitHealth" class="form-control" rows="5">{{ old.benefitHealth }}</textarea>
-					{% if errors.benefitHealth %}
-						<span class="help-block">{{ errors.benefitHealth | first }}</span>
-					{% endif %}
-				</div>
-				<div class="form-group{{ errors.benefitUrbanRegeneration ? ' has-error' : '' }}">
-					<label for="benefitUrbanRegeneration">Urban regeneration</label>
-					<textarea name="benefitUrbanRegeneration" class="form-control" rows="5">{{ old.benefitUrbanRegeneration }}</textarea>
-					{% if errors.benefitUrbanRegeneration %}
-						<span class="help-block">{{ errors.benefitUrbanRegeneration | first }}</span>
-					{% endif %}
-				</div>
-				<div class="form-group{{ errors.benefitEmployment ? ' has-error' : '' }}">
-					<label for="benefitEmployment">Employment opportunities</label>
-					<textarea name="benefitEmployment" class="form-control" rows="5">{{ old.benefitEmployment }}</textarea>
-					{% if errors.benefitEmployment %}
-						<span class="help-block">{{ errors.benefitEmployment | first }}</span>
-					{% endif %}
-				</div>
-				<div class="form-group{{ errors.benefitVolunteeringOpportunities ? ' has-error' : '' }}">
-					<label for="benefitVolunteeringOpportunities">Volunteering opportunities</label>
-					<textarea name="benefitVolunteeringOpportunities" class="form-control" rows="5">{{ old.benefitVolunteeringOpportunities }}</textarea>
-					{% if errors.benefitVolunteeringOpportunities %}
-						<span class="help-block">{{ errors.benefitVolunteeringOpportunities | first }}</span>
-					{% endif %}
-				</div>
-				<div class="form-group{{ errors.benefitSkillsTraining ? ' has-error' : '' }}">
-					<label for="benefitSkillsTraining">Skills training</label>
-					<textarea name="benefitSkillsTraining" class="form-control" rows="5">{{ old.benefitSkillsTraining }}</textarea>
-					{% if errors.benefitSkillsTraining %}
-						<span class="help-block">{{ errors.benefitSkillsTraining | first }}</span>
-					{% endif %}
-				</div>
-				<div class="form-group{{ errors.benefitEnvironmentalEducation ? ' has-error' : '' }}">
-					<label for="benefitEnvironmentalEducation">Environmental education</label>
-					<textarea name="benefitEnvironmentalEducation" class="form-control" rows="5">{{ old.benefitEnvironmentalEducation }}</textarea>
-					{% if errors.benefitEnvironmentalEducation %}
-						<span class="help-block">{{ errors.benefitEnvironmentalEducation | first }}</span>
-					{% endif %}
-				</div>
-				<div class="form-group{{ errors.benefitLocalEconomy ? ' has-error' : '' }}">
-					<label for="benefitLocalEconomy">Local economy</label>
-					<textarea name="benefitLocalEconomy" class="form-control" rows="5">{{ old.benefitLocalEconomy }}</textarea>
-					{% if errors.benefitLocalEconomy %}
-						<span class="help-block">{{ errors.benefitLocalEconomy | first }}</span>
-					{% endif %}
-				</div>
-				<div class="form-group{{ errors.benefitLocalFoodProduction ? ' has-error' : '' }}">
-					<label for="benefitLocalFoodProduction">Local food production</label>
-					<textarea name="benefitLocalFoodProduction" class="form-control" rows="5">{{ old.benefitLocalFoodProduction }}</textarea>
-					{% if errors.benefitLocalFoodProduction %}
-						<span class="help-block">{{ errors.benefitLocalFoodProduction | first }}</span>
-					{% endif %}
+						<h3>Socio-economic benefits provided</h3>
+						<div class="form-group{{ errors.benefitImprovedAccess ? ' has-error' : '' }}">
+							<label for="benefitImprovedAccess">Improved access for people</label>
+							<textarea name="benefitImprovedAccess" class="form-control" rows="5">{{ old.benefitImprovedAccess }}</textarea>
+							{% if errors.benefitImprovedAccess %}
+								<span class="help-block">{{ errors.benefitImprovedAccess | first }}</span>
+							{% endif %}
+						</div>
+						<div class="form-group{{ errors.benefitRecreationalOpportunities ? ' has-error' : '' }}">
+							<label for="benefitRecreationalOpportunities">Recreational opportunities</label>
+							<textarea name="benefitRecreationalOpportunities" class="form-control" rows="5">{{ old.benefitRecreationalOpportunities }}</textarea>
+							{% if errors.benefitRecreationalOpportunities %}
+								<span class="help-block">{{ errors.benefitRecreationalOpportunities | first }}</span>
+							{% endif %}
+						</div>
+						<div class="form-group{{ errors.benefitGreenTourism ? ' has-error' : '' }}">
+							<label for="benefitGreenTourism">Green tourism</label>
+							<textarea name="benefitGreenTourism" class="form-control" rows="5">{{ old.benefitGreenTourism }}</textarea>
+							{% if errors.benefitGreenTourism %}
+								<span class="help-block">{{ errors.benefitGreenTourism | first }}</span>
+							{% endif %}
+						</div>
+						<div class="form-group{{ errors.benefitHealth ? ' has-error' : '' }}">
+							<label for="benefitHealth">Health benefits</label>
+							<textarea name="benefitHealth" class="form-control" rows="5">{{ old.benefitHealth }}</textarea>
+							{% if errors.benefitHealth %}
+								<span class="help-block">{{ errors.benefitHealth | first }}</span>
+							{% endif %}
+						</div>
+						<div class="form-group{{ errors.benefitUrbanRegeneration ? ' has-error' : '' }}">
+							<label for="benefitUrbanRegeneration">Urban regeneration</label>
+							<textarea name="benefitUrbanRegeneration" class="form-control" rows="5">{{ old.benefitUrbanRegeneration }}</textarea>
+							{% if errors.benefitUrbanRegeneration %}
+								<span class="help-block">{{ errors.benefitUrbanRegeneration | first }}</span>
+							{% endif %}
+						</div>
+						<div class="form-group{{ errors.benefitEmployment ? ' has-error' : '' }}">
+							<label for="benefitEmployment">Employment opportunities</label>
+							<textarea name="benefitEmployment" class="form-control" rows="5">{{ old.benefitEmployment }}</textarea>
+							{% if errors.benefitEmployment %}
+								<span class="help-block">{{ errors.benefitEmployment | first }}</span>
+							{% endif %}
+						</div>
+						<div class="form-group{{ errors.benefitVolunteeringOpportunities ? ' has-error' : '' }}">
+							<label for="benefitVolunteeringOpportunities">Volunteering opportunities</label>
+							<textarea name="benefitVolunteeringOpportunities" class="form-control" rows="5">{{ old.benefitVolunteeringOpportunities }}</textarea>
+							{% if errors.benefitVolunteeringOpportunities %}
+								<span class="help-block">{{ errors.benefitVolunteeringOpportunities | first }}</span>
+							{% endif %}
+						</div>
+						<div class="form-group{{ errors.benefitSkillsTraining ? ' has-error' : '' }}">
+							<label for="benefitSkillsTraining">Skills training</label>
+							<textarea name="benefitSkillsTraining" class="form-control" rows="5">{{ old.benefitSkillsTraining }}</textarea>
+							{% if errors.benefitSkillsTraining %}
+								<span class="help-block">{{ errors.benefitSkillsTraining | first }}</span>
+							{% endif %}
+						</div>
+						<div class="form-group{{ errors.benefitEnvironmentalEducation ? ' has-error' : '' }}">
+							<label for="benefitEnvironmentalEducation">Environmental education</label>
+							<textarea name="benefitEnvironmentalEducation" class="form-control" rows="5">{{ old.benefitEnvironmentalEducation }}</textarea>
+							{% if errors.benefitEnvironmentalEducation %}
+								<span class="help-block">{{ errors.benefitEnvironmentalEducation | first }}</span>
+							{% endif %}
+						</div>
+						<div class="form-group{{ errors.benefitLocalEconomy ? ' has-error' : '' }}">
+							<label for="benefitLocalEconomy">Local economy</label>
+							<textarea name="benefitLocalEconomy" class="form-control" rows="5">{{ old.benefitLocalEconomy }}</textarea>
+							{% if errors.benefitLocalEconomy %}
+								<span class="help-block">{{ errors.benefitLocalEconomy | first }}</span>
+							{% endif %}
+						</div>
+						<div class="form-group{{ errors.benefitLocalFoodProduction ? ' has-error' : '' }}">
+							<label for="benefitLocalFoodProduction">Local food production</label>
+							<textarea name="benefitLocalFoodProduction" class="form-control" rows="5">{{ old.benefitLocalFoodProduction }}</textarea>
+							{% if errors.benefitLocalFoodProduction %}
+								<span class="help-block">{{ errors.benefitLocalFoodProduction | first }}</span>
+							{% endif %}
+						</div>
+					</div>
+<!-- End Benefits tab -->
 				</div>
 				
-				<button type="submit" class="btn btn-default">Create Scheme</button>
+				<button type="submit" class="btn btn-default">Save</button>
 
 				{{ csrf.field | raw }}
 			</form>	
