@@ -16,6 +16,7 @@ class Trust extends Model
 	 * @var string
 	 */
 	protected $table = 'trusts';
+	protected $primaryKey = 'idtrusts';
 
 	/**
 	 * Table fields that can have content added
@@ -24,4 +25,9 @@ class Trust extends Model
 	protected $fillable = [
 		'trust',
 	];
+
+	public function schemes()
+	{
+		return $this->belongsToMany('App\Models\Scheme', 'scheme_trust', 'trust_id', 'scheme_id');
+	}
 }

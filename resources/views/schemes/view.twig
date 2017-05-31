@@ -1,0 +1,297 @@
+{% extends 'templates/app.twig' %}
+
+{% block content %}
+	<div class="row">
+		<div class="col-md-12">
+			<h1>{{ scheme.schemeName }}</h1>
+
+			<hr>
+			<h3 class="bg-primary">Introduction</h3>
+			<h3>Trusts Involved:</h3>
+			<ul>
+			{% for trust in scheme.trusts %}
+        		<li>{{ trust.trust }}</li>
+    		{% endfor %}
+    		</ul>
+
+			<table class="table">
+				<thead>
+					<tr>
+						<th>Region</th>
+						<th>Start Date</th>
+						<th>End Date</th>
+						<th>Duration</th>
+						<th>Stage</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>{{ scheme.region }}</td>
+						<td>{{ scheme.startDate }}</td>
+						<td>{{ scheme.endDate }}</td>
+						<td>{{ scheme.duration }}</td>
+						<td>{{ scheme.stage }}</td>
+					</tr>
+				</tbody>
+			</table>
+
+			<h3>Contact Details:</h3>
+			<p><strong>Name:</strong> {{ scheme.contactName }}</p>
+			<p><strong>Telephone:</strong> {{ scheme.contactPhone}}</p>
+			<p><strong>Email:</strong> <a href="mailto:{{ scheme.contactEmail }}">{{ scheme.contactEmail }}</a></p>
+			<p><strong>Job Title:</strong> {{ scheme.contactJobTitle }}</p>
+
+			<hr>
+
+			<h4>Main aims and objectives:</h4>
+			<p>{{ scheme.aims }}</p>
+
+			<hr>
+
+			<h3>Within the scheme boundary</h3>
+			<p><strong>Scheme area (HA):</strong> {{ scheme.sizeHA }}</p>
+			<p><strong>Nearest city:</strong> {{ scheme.nearestCity }}</p>
+			<p><strong>Local authority areas:</strong> {{ scheme.localAuthorityAreas }}</p>
+			<p><strong>GIS Layer Provided:</strong> {{ scheme.gisLayerSupplied }}</p>
+			
+			<hr>
+
+			<h3 class="bg-primary">Partners &amp; Funding</h3>
+			
+			<h3>Partners</h3>
+			<ul>
+			{% for partner in scheme.partners %}
+				<li>{{ partner.partner }}</li>
+    		{% endfor %}
+			</ul>
+
+			<table class="table">
+				<thead>
+					<tr>
+						<th>Funding Source</th>
+						<th>Amount</th>
+						<th>Timescale</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for source in sources %}
+						{% if source.amount != "" %}
+						<tr>
+							<td>{{ source.fundingPartner.0.funding_partner }}</td>
+							<td>&pound;{{ source.amount }}.00</td>
+							<td>{{ source.timescale }}</td>
+						</tr>
+						{% endif %}
+					{% endfor %}
+				</tbody>
+			</table>
+
+			<hr>
+
+			<h3 class="bg-primary">Habitats</h3>
+			<ul>
+			{% for habitat in scheme.habitats %}
+				<li>{{ habitat.habitat }}</li>
+    		{% endfor %}
+			</ul>
+
+			<h3 class="bg-primary">Key Species</h3>
+			<ul>
+			{% for specie in scheme.species %}
+				<li>{{ specie.species }}</li>
+    		{% endfor %}
+			</ul>
+
+			
+			<h3 class="bg-primary">Delivery mechanisms</h3>
+
+			<table class="table">
+				<thead>
+					<tr>
+						<th>Area (HA)</th>
+						<th>Habitat type restored</th>
+						<th>When</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for rest in restored %}
+						<tr>
+							<td>{{ rest.areaHA }}</td>
+							<td>{{ rest.habitat.habitat }}</td>
+							<td>{{ rest.date }}</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+
+			<hr>
+
+			<table class="table">
+				<thead>
+					<tr>
+						<th>Area (HA)</th>
+						<th>Habitat type created</th>
+						<th>When</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for create in created %}
+						<tr>
+							<td>{{ create.areaHA }}</td>
+							<td>{{ create.habitat.habitat }}</td>
+							<td>{{ create.date }}</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+
+			<hr>
+
+			<h3>Land Owner Advice</strong></h3>
+			{{ scheme.deliveryLandOwnerAdvice }}
+
+			<hr>
+
+			<h3>Management Agreements</h3>
+			{{ scheme.deliveryManagementAgreements }}
+				
+			<hr>
+
+			<h3>Agri Environmental Schemes</h3>
+			{{ scheme.deliveryAgriEnvironmentalSchemes }}
+
+			<hr>
+
+			<h3>Land Acquisition</h3>
+			{{ scheme.deliveryLandAcquisition }}
+
+			<hr>
+
+			<h3>Grazing Schemes</h3>
+			{{ scheme.deliveryGrazingSchemes }}
+
+			<hr>
+
+			<h3>Managed Realignment</h3>
+			{{ scheme.deliveryManagementRealignment }}
+
+			<hr>
+
+			<h3>Community Engagement</h3>
+			{{ scheme.deliveryCommunityEngagement }}
+
+			<hr>
+
+			<h3>Details of any Monitoring</h3>
+			{{ scheme.deliveryMonitoringDetails }}
+
+			<h3 class="bg-primary">Progress</h3>
+
+			<h3>Scheme progress and measures of success</h3>
+			{{ scheme.progressSchemeProgress }}
+
+			<hr>
+
+			<h3>Scheme Website</h3>
+			{{ scheme.schemeWebsite }}
+
+			<hr>
+
+			<h3>Scheme Outputs (eg publications, management plans)</h3>
+			{{ scheme.progressSchemeOutputs }}
+
+			<hr>
+
+			<h3>Barriers to Delivery (excluding funding)</h3>
+			{{ scheme.progressDeliveryBarrier }}
+
+
+			<h3 class="bg-primary">Ecosystem services provided</h3>
+
+			<h3>Climate change adaption</h3>
+			{{ scheme.benefitClimateChange }}
+
+			<hr>
+
+			<h3>Water quality improvement</h3>
+			{{ scheme.WaterQuality }}
+
+			<hr>
+
+			<h3>Reduced flood risk</h3>
+			{{ scheme.benefitReducedFloodRisk }}
+
+			<hr>
+
+			<h3>Carbon storage</h3>
+			{{ scheme.benefitCarbonStorage }}
+
+			<hr>
+
+			<h3>Air quality improvement</h3>
+			{{ scheme.benefitAirQualityImprovement }}
+
+			<hr>
+
+			<h3>Provision of habitat for pollinating insects</h3>
+			{{ scheme.benefitHabitatProvision }}
+
+			<h3 class="bg-primary">Socio-economic benefits provided</h3>
+
+			<h3>Improved access for people</h3>
+			{{ scheme.benefitImprovedAccess }}
+
+			<hr>
+
+			<h3>Recreational opportunites</h3>
+			{{ scheme.benefitRecreationalOpportunities }}
+
+			<hr>
+
+			<h3>Green tourism</h3>
+			{{ scheme.benefitGreenTourism }}
+
+			<hr>
+
+			<h3>Health benefits</h3>
+			{{ scheme.benefitHealth }}
+
+			<hr>
+
+			<h3>Urban regeneration</h3>
+			{{ scheme.benefitUrbanRegeneration }}
+
+			<hr>
+
+			<h3>Employment opportunites</h3>
+			{{ scheme.benefitEmployment }}
+
+			<hr>
+
+			<h3>Volunteering opportunities</h3>
+			{{ scheme.benefitVolunteeringOpportunities }}
+
+			<hr>
+
+			<h3>Skills training</h3>
+			{{ scheme.benefitSkillsTraining }}
+
+			<hr>
+
+			<h3>Environmental education</h3>
+			{{ scheme.benefitEnvironmentalEducation }}
+
+			<hr>
+
+			<h3>Local economy</h3>
+			{{ scheme.benefitLocalEconomy }}
+
+			<hr>
+
+			<h3>Local food production</h3>
+			{{ scheme.benefitLocalFoodProduction }}
+
+		</div>
+
+	</div>
+{% endblock %}

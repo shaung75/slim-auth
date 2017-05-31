@@ -104,20 +104,32 @@ class SchemeController extends Controller
 		}
 
 		foreach($request->getParam('habitat_restored') as $restoredHabitat) {
-			$scheme->restoredHabitats()->create($restoredHabitat);
+			if($restoredHabitat['habitat_id']) {
+				$scheme->restoredHabitats()->create($restoredHabitat);
+			}
 		}
 
 		foreach($request->getParam('habitat_created') as $createdHabitat) {
-			$scheme->createdHabitats()->create($createdHabitat);
+			if($createdHabitat['habitat_id']) {
+				$scheme->createdHabitats()->create($createdHabitat);
+			}
 		}
-		
-		//echo '<pre>';
-		//print_r($scheme);
-		//print_r($request->getParams());
-		//die();
 
 		$this->flash->addMessage('info', 'New scheme "'. $request->getParam('schemeName') .'" has been created');
 
 		return $response->withRedirect($this->router->pathFor('scheme.add'));
+	}
+
+	public function view($request, $response, $args) {
+		$scheme = Scheme::where('id', $args['id'])->with('trusts', 'habitats', 'partners', 'fundingSources', 'restoredHabitats', 'createdHabitats', 'species')->first();
+		$sources = f::where('scheme_id', $args['id'])->with('fundingPartner')->get();
+
+
+		return $this->view->render($response, 'schemes/view.twig', [
+	        'scheme' => $scheme,
+	        'sources' => $sources,
+	        'restored' => $scheme->restoredHabitats()->with('habitat')->get(),
+	        'created' => $scheme->createdHabitats()->with('habitat')->get()
+	    ]);
 	}
 }

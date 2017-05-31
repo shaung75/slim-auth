@@ -34,6 +34,8 @@ $app->group('', function() {
 	$this->get('/scheme/add', 'SchemeController:index')->setName('scheme.add');
 	$this->post('/scheme/add', 'SchemeController:addScheme');
 
+	$this->get('/scheme/{id}', 'SchemeController:view')->setName('scheme.view');
+
 	$this->get('/test', 'TestController:index')->setName('test');
 	$this->post('/test', 'TestController:newScheme');
 })->add(new AuthMiddleware($container));
