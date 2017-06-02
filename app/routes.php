@@ -39,6 +39,7 @@ $app->group('', function() {
 	$this->get('/scheme/{id}', 'SchemeController:view')->setName('scheme.view');
 
 	$this->get('/scheme/{id}/edit', 'SchemeController:edit')->setName('scheme.edit');
+	$this->put('/scheme/{id}/edit', 'SchemeController:updateScheme');
 
 	$this->get('/test', 'TestController:index')->setName('test');
 	$this->post('/test', 'TestController:newScheme');

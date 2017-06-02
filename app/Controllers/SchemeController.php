@@ -27,10 +27,6 @@ class SchemeController extends Controller
 
 	public function addScheme($request, $response)
 	{
-		/*echo '<pre>';
-		print_r($request->getParams());
-		die();
-		*/
 		$validation = $this->validator->validate($request, [
 			'schemeName' => v::notEmpty(),
 		]);
@@ -122,7 +118,81 @@ class SchemeController extends Controller
 		return $response->withRedirect($this->router->pathFor('scheme.edit', ['id' => $scheme->id]));
 	}
 
-	public function view($request, $response, $args) {
+	public function updateScheme ($request, $response, $args)
+	{
+		$validation = $this->validator->validate($request, [
+			'schemeName' => v::notEmpty(),
+		]);
+
+		if($validation->failed()) {
+			$this->flash->addMessage('error', 'Something went wrong (sorry). Try again');
+
+			return $response->withRedirect($this->router->pathFor('scheme.edit', ['id' => $args['id']]));
+		}
+
+		$scheme = Scheme::find($args['id']);
+
+		// Form Fields
+		$scheme->schemeName = $request->getParam('schemeName');
+		$scheme->aims = $request->getParam('aims');
+		$scheme->deliveryLandOwnerAdvice = $request->getParam('deliveryLandOwnerAdvice');
+		$scheme->deliveryAgriEnvironmentalSchemes = $request->getParam('deliveryAgriEnvironmentalSchemes');
+		$scheme->deliveryLandAcquisition = $request->getParam('deliveryLandAcquisition');
+		$scheme->deliveryGrazingSchemes = $request->getParam('deliveryGrazingSchemes');
+		$scheme->deliveryManagementRealignment = $request->getParam('deliveryManagementRealignment');
+		$scheme->deliveryCommunityEngagement = $request->getParam('deliveryCommunityEngagement');
+		$scheme->deliveryMonitoringDetails = $request->getParam('deliveryMonitoringDetails');
+		$scheme->benefitClimateChange = $request->getParam('benefitClimateChange');
+		$scheme->benefitWaterQuality = $request->getParam('benefitWaterQuality');
+		$scheme->benefitReducedFloodRisk = $request->getParam('benefitReducedFloodRisk');
+		$scheme->benefitCarbonStorage = $request->getParam('benefitCarbonStorage');
+		$scheme->benefitHabitatProvision = $request->getParam('benefitHabitatProvision');
+		$scheme->benefitVolunteeringOpportunities = $request->getParam('benefitVolunteeringOpportunities');
+		$scheme->benefitImprovedAccess = $request->getParam('benefitImprovedAccess');
+		$scheme->benefitUrbanRegeneration = $request->getParam('benefitUrbanRegeneration');
+		$scheme->benefitLocalEconomy = $request->getParam('benefitLocalEconomy');
+		$scheme->benefitLocalFoodProduction = $request->getParam('benefitLocalFoodProduction');
+		$scheme->benefitSkillsTraining = $request->getParam('benefitSkillsTraining');
+		$scheme->benefitEnvironmentalEducation = $request->getParam('benefitEnvironmentalEducation');
+		$scheme->benefitGreenTourism = $request->getParam('benefitGreenTourism');
+		$scheme->benefitHealth = $request->getParam('benefitHealth');
+		$scheme->benefitRecreationalOpportunities = $request->getParam('benefitRecreationalOpportunities');
+		$scheme->benefitEmployment = $request->getParam('benefitEmployment');
+		$scheme->progressSchemeProgress = $request->getParam('progressSchemeProgress');
+		$scheme->progressDeliveryBarrier = $request->getParam('progressDeliveryBarrier');
+		$scheme->progressSchemeOutputs = $request->getParam('progressSchemeOutputs');
+		$scheme->schemeWebsite = $request->getParam('schemeWebsite');
+		$scheme->contactName = $request->getParam('contactName');
+		$scheme->contactJobTitle = $request->getParam('contactJobTitle');
+		$scheme->contactPhone = $request->getParam('contactPhone');
+		$scheme->contactEmail = $request->getParam('contactEmail');
+		$scheme->region = $request->getParam('region');
+		$scheme->sizeHA = $request->getParam('sizeHA');
+		$scheme->gisLayerSupplied = $request->getParam('gisLayerSupplied');
+		$scheme->stage = $request->getParam('stage');
+		$scheme->startDate = $request->getParam('startDate');
+		$scheme->endDate = $request->getParam('endDate');
+		$scheme->duration = $request->getParam('duration');
+		$scheme->nearestCity = $request->getParam('nearestCity');
+		$scheme->localAuthorityAreas = $request->getParam('localAuthorityAreas');
+		$scheme->deliveryManagementAgreements = $request->getParam('deliveryManagementAgreements');
+		$scheme->benefitAirQuality = $request->getParam('benefitAirQuality');
+
+		$scheme->save();
+		
+		// Update relationships
+		$scheme->trusts()->sync($request->getParam('trust'));
+		$scheme->species()->sync($request->getParam('species'));
+		$scheme->habitats()->sync($request->getParam('habitats'));
+		$scheme->partners()->sync($request->getParam('partners'));
+		
+		$this->flash->addMessage('info', 'Scheme updated');
+
+		return $response->withRedirect($this->router->pathFor('scheme.edit', ['id' => $scheme->id]));
+	}
+
+	public function view($request, $response, $args)
+	{
 		$scheme = Scheme::where('id', $args['id'])->with('trusts', 'habitats', 'partners', 'fundingSources', 'restoredHabitats', 'createdHabitats', 'species')->first();
 		$sources = f::where('scheme_id', $args['id'])->with('fundingPartner')->get();
 
