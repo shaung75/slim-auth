@@ -102,4 +102,9 @@ class Scheme extends Model
 	{
 		return $this->belongsToMany('App\Models\Trust', 'scheme_trust', 'scheme_id', 'trust_id');
 	}
+
+	public function edit($trust)
+	{
+		return $this->belongsToMany('App\Models\Trust', 'scheme_trust', 'scheme_id', 'trust_id')->where('trust_id', 10);	
+	}
 }

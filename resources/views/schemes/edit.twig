@@ -1,10 +1,12 @@
 {% extends 'templates/app.twig' %}
 
-{% block content %} 
+{% block content %}
 	<div class="row">
 		<div class="col-md-12">
 			<h2>New Living Landscape Scheme</h2>	
 			<hr>
+
+			{{ scheme }}
 
 			<form action="{{ path_for('scheme.add') }}" method="post" autocomplete="off">
 
@@ -31,20 +33,16 @@
 				<!-- Tab panes -->
 				<div class="tab-content">
 
-<!-- Intro Tab -->
+<!-- Intro Tab -->				
 					<div role="tabpanel" class="tab-pane active" id="intro">
 						<h3>&nbsp;</h3>
 						<label>Trusts Involved</label>
 						<div class="row">
 							<div class="col-md-4">
 							{% for trusts in trust.all %}
-								<div class="checkbox{% if auth.user.trusts_idtrusts == loop.index %} checked{% endif %}" >
+								<div class="checkbox{% if auth.user.trusts_idtrusts == loop.index %}{% endif %}" >
 									<label>
-									{% if edit == 1 %}
-										<input type="checkbox" name="trust[]" value="{{ trusts.idtrusts }}" {% for tru in old.trusts %}{% if (tru.idtrusts == trusts.idtrusts)%}checked{% endif %}{% endfor %}> {{ trusts.trust }}
-									{% else %}
-										<input type="checkbox" name="trust[]" value="{{ trusts.idtrusts }}" {% if trusts.idtrusts == auth.user.trusts_idtrusts %}checked{% endif %}> {{ trusts.trust }}
-									{% endif %}
+										<input type="checkbox" name="trust[]" value="{{ trusts.idtrusts }}" {% if loop.index in old.trust or auth.user.trusts_idtrusts == loop.index %}checked{% endif %} {% if auth.user.trusts_idtrusts == loop.index %}{% endif %}> {{ trusts.trust }}
 									</label>
 								</div>
 								{% if loop.index is divisible by(16) %}
@@ -63,17 +61,17 @@
 									<label for="region">Region</label>
 									<select class="form-control" name="region">
 										<option disabled selected>Region</option>
-										<option value="Scotland" {{ old.region == 'Scotland' ? 'selected' : '' }}>Scotland</option>
-										<option value="North East" {{ old.region == 'North East' ? 'selected' : '' }}>North East</option>
-										<option value="North West" {{ old.region == 'North West' ? 'selected' : '' }}>North West</option>
-										<option value="Yorkshire and Humber" {{ old.region == 'Yorkshire and Humber' ? 'selected' : '' }}>Yorkshire and Humber</option>
-										<option value="East Midlands" {{ old.region == 'East Midlands' ? 'selected' : '' }}>East Midlands</option>
-										<option value="West Midlands" {{ old.region == 'West Midlands' ? 'selected' : '' }}>West Midlands</option>
-										<option value="Eastern" {{ old.region == 'Eastern' ? 'selected' : '' }}>Eastern</option>
-										<option value="South East" {{ old.region == 'South East' ? 'selected' : '' }}>South East</option>
-										<option value="South West" {{ old.region == 'South West' ? 'selected' : '' }}>South West</option>
-										<option value="London" {{ old.region == 'London' ? 'selected' : '' }}>London</option>
-										<option value="Irish Sea" {{ old.region == 'Irish Sea' ? 'selected' : '' }}>Irish Sea</option>
+										<option value="Scotland">Scotland</option>
+										<option value="North East">North East</option>
+										<option value="North West">North West</option>
+										<option value="Yorkshire and Humber">Yorkshire and Humber</option>
+										<option value="East Midlands">East Midlands</option>
+										<option value="West Midlands">West Midlands</option>
+										<option value="Eastern">Eastern</option>
+										<option value="South East">South East</option>
+										<option value="South West">South West</option>
+										<option value="London">London</option>
+										<option value="Irish Sea">Irish Sea</option>
 									</select>
 								</div>
 
@@ -239,7 +237,7 @@
 								{% for partner in partnerss.all if partner.partner_categories_id == partnercat.id %}
 									<div class="checkbox">
 										<label>
-				        					<input type="checkbox" name="partners[]" value="{{ partner.id }}" {% for par in old.partners %}{% if par.id == partner.id %}checked{% endif %}{% endfor %}> {{ partner.partner }}
+				        					<input type="checkbox" name="partners[]" value="{{ partner.id }}"> {{ partner.partner }}
 				        				</label>
 				        			</div>
 			    				{% endfor %}
@@ -272,7 +270,7 @@
 														{% for fundingpartnercat in fundingpartnercats.all %}
 															<optgroup label="{{ fundingpartnercat.funding_partner_category }}">
 																{% for fundingpartner in fundingpartners.all if fundingpartner.funding_partner_categories_id == fundingpartnercat.id %}
-																	<option value="{{ fundingpartner.id }}" {% if sources.0.fundingpartner.0.id == fundingpartner.id %}selected{% endif %}>{{ fundingpartner.funding_partner }}</option>		        		
+																	<option value="{{ fundingpartner.id }}">{{ fundingpartner.funding_partner }}</option>		        		
 											    				{% endfor %}
 										    				</optgroup>
 										    			{% endfor %}
@@ -281,12 +279,12 @@
 											</td>
 											<td>
 												<div class="form-group">
-													<input type="text" class="form-control" name="funding_sources[0][amount]" value="{{ sources.0.amount }}">
+													<input type="text" class="form-control" name="funding_sources[0][amount]">
 												</div>
 											</td>
 											<td>
 												<div class="form-group">
-													<input type="text" class="form-control" name="funding_sources[0][timescale]" value="{{ sources.0.timescale }}">
+													<input type="text" class="form-control" name="funding_sources[0][timescale]">
 												</div>
 											</td>
 										</tr>
@@ -299,7 +297,7 @@
 														{% for fundingpartnercat in fundingpartnercats.all %}
 															<optgroup label="{{ fundingpartnercat.funding_partner_category }}">
 																{% for fundingpartner in fundingpartners.all if fundingpartner.funding_partner_categories_id == fundingpartnercat.id %}
-																	<option value="{{ fundingpartner.id }}" {% if sources.1.fundingpartner.0.id == fundingpartner.id %}selected{% endif %}>{{ fundingpartner.funding_partner }}</option>		        		
+																	<option value="{{ fundingpartner.id }}">{{ fundingpartner.funding_partner }}</option>		        		
 											    				{% endfor %}
 										    				</optgroup>
 										    			{% endfor %}
@@ -308,12 +306,12 @@
 											</td>
 											<td>
 												<div class="form-group">
-													<input type="text" class="form-control" name="funding_sources[1][amount]" value="{{ sources.1.amount }}">
+													<input type="text" class="form-control" name="funding_sources[1][amount]">
 												</div>
 											</td>
 											<td>
 												<div class="form-group">
-													<input type="text" class="form-control" name="funding_sources[1][timescale]" value="{{ sources.1.timescale }}">
+													<input type="text" class="form-control" name="funding_sources[1][timescale]">
 												</div>
 											</td>
 										</tr>
@@ -326,7 +324,7 @@
 														{% for fundingpartnercat in fundingpartnercats.all %}
 															<optgroup label="{{ fundingpartnercat.funding_partner_category }}">
 																{% for fundingpartner in fundingpartners.all if fundingpartner.funding_partner_categories_id == fundingpartnercat.id %}
-																	<option value="{{ fundingpartner.id }}" {% if sources.2.fundingpartner.0.id == fundingpartner.id %}selected{% endif %}>{{ fundingpartner.funding_partner }}</option>		        		
+																	<option value="{{ fundingpartner.id }}">{{ fundingpartner.funding_partner }}</option>		        		
 											    				{% endfor %}
 										    				</optgroup>
 										    			{% endfor %}
@@ -335,12 +333,12 @@
 											</td>
 											<td>
 												<div class="form-group">
-													<input type="text" class="form-control" name="funding_sources[2][amount]" value="{{ sources.2.amount }}">
+													<input type="text" class="form-control" name="funding_sources[2][amount]">
 												</div>
 											</td>
 											<td>
 												<div class="form-group">
-													<input type="text" class="form-control" name="funding_sources[2][timescale]" value="{{ sources.2.timescale }}">
+													<input type="text" class="form-control" name="funding_sources[2][timescale]">
 												</div>
 											</td>
 										</tr>
@@ -353,7 +351,7 @@
 														{% for fundingpartnercat in fundingpartnercats.all %}
 															<optgroup label="{{ fundingpartnercat.funding_partner_category }}">
 																{% for fundingpartner in fundingpartners.all if fundingpartner.funding_partner_categories_id == fundingpartnercat.id %}
-																	<option value="{{ fundingpartner.id }}" {% if sources.3.fundingpartner.0.id == fundingpartner.id %}selected{% endif %}>{{ fundingpartner.funding_partner }}</option>		        		
+																	<option value="{{ fundingpartner.id }}">{{ fundingpartner.funding_partner }}</option>		        		
 											    				{% endfor %}
 										    				</optgroup>
 										    			{% endfor %}
@@ -362,12 +360,12 @@
 											</td>
 											<td>
 												<div class="form-group">
-													<input type="text" class="form-control" name="funding_sources[3][amount]" value="{{ sources.3.amount }}">
+													<input type="text" class="form-control" name="funding_sources[3][amount]">
 												</div>
 											</td>
 											<td>
 												<div class="form-group">
-													<input type="text" class="form-control" name="funding_sources[3][timescale]" value="{{ sources.3.timescale }}">
+													<input type="text" class="form-control" name="funding_sources[3][timescale]">
 												</div>
 											</td>
 										</tr>
@@ -380,7 +378,7 @@
 														{% for fundingpartnercat in fundingpartnercats.all %}
 															<optgroup label="{{ fundingpartnercat.funding_partner_category }}">
 																{% for fundingpartner in fundingpartners.all if fundingpartner.funding_partner_categories_id == fundingpartnercat.id %}
-																	<option value="{{ fundingpartner.id }}" {% if sources.4.fundingpartner.0.id == fundingpartner.id %}selected{% endif %}>{{ fundingpartner.funding_partner }}</option>		        		
+																	<option value="{{ fundingpartner.id }}">{{ fundingpartner.funding_partner }}</option>		        		
 											    				{% endfor %}
 										    				</optgroup>
 										    			{% endfor %}
@@ -389,12 +387,12 @@
 											</td>
 											<td>
 												<div class="form-group">
-													<input type="text" class="form-control" name="funding_sources[4][amount]" value="{{ sources.4.amount }}">
+													<input type="text" class="form-control" name="funding_sources[4][amount]">
 												</div>
 											</td>
 											<td>
 												<div class="form-group">
-													<input type="text" class="form-control" name="funding_sources[4][timescale]" value="{{ sources.4.timescale }}">
+													<input type="text" class="form-control" name="funding_sources[4][timescale]">
 												</div>
 											</td>
 										</tr>
@@ -422,7 +420,7 @@
 								{% for hab in habitats.all if hab.habitat_categories_id == habcat.id %}
 									<div class="checkbox">
 										<label>
-				        					<input type="checkbox" name="habitats[]" value="{{ hab.id }}" {% for oldhab in old.habitats %}{% if oldhab.id == hab.id %}checked{% endif %}{% endfor %}> {{ hab.habitat }}
+				        					<input type="checkbox" name="habitats[]" value="{{ hab.id }}"> {{ hab.habitat }}
 				        				</label>
 				        			</div>
 			    				{% endfor %}
@@ -443,7 +441,7 @@
 							<label for="species">(ctrl+click for multiple)</label> 
 							<select class="form-control" name="species[]" multiple size="30">
 							{% for specie in species.all %}
-								<option value="{{ specie.id }}" {% for spe in old.species %}{% if spe.id == specie.id %}selected{% endif %}{% endfor %}>{{ specie.species }}</option>
+								<option value="{{ specie.id }}" {% if specie.id in old.species %}selected{% endif %}>{{ specie.species }}</option>
 							{% endfor %}
 							</select>
 						</div>
@@ -465,46 +463,15 @@
 										</tr>
 									</thead>
 									<tbody>
-									{% for oldhab in old.restoredhabitats %}
-										{% set k = loop.index - 1 %}
 										<tr>
 											<td>
 												<div class="form-group">
-													<input type="number" class="form-control" name="habitat_restored[{{ k }}][areaHA]" placeholder="hectares" value="{{ oldhab.areaHA }}">
+													<input type="number" class="form-control" name="habitat_restored[0][areaHA]" placeholder="hectares">
 												</div>
 											</td>
 											<td>
 												<div class="form-group">
-													<select class="form-control" name="habitat_restored[{{ k }}][habitat_id]">
-														<option disabled selected>Habitat type&hellip;</option>
-														{% for habitatcat in habitatcats.all %}
-															<optgroup label="{{ habitatcat.habitat_category }}">
-																{% for habitat in habitats.all if habitat.habitat_categories_id == habitatcat.id %}
-																	<option value="{{ habitat.id }}" {{ oldhab.habitat_id == habitat.id ? 'selected' : '' }}>{{ habitat.habitat }}</option>		        		
-											    				{% endfor %}
-										    				</optgroup>
-										    			{% endfor %}
-									    			</select>
-									    		</div>
-											</td>
-											<td>
-												<div class="form-group">
-													<input type="text" class="form-control" name="habitat_restored[{{ k }}][date]" value="{{ oldhab.date }}">
-												</div>
-											</td>
-										</tr>
-									{% endfor %}
-
-									{% for i in old.restoredhabitats|length..4 %}
-										<tr>
-											<td>
-												<div class="form-group">
-													<input type="number" class="form-control" name="habitat_restored[{{ i }}][areaHA]" placeholder="hectares">
-												</div>
-											</td>
-											<td>
-												<div class="form-group">
-													<select class="form-control" name="habitat_restored[{{ i }}][habitat_id]">
+													<select class="form-control" name="habitat_restored[0][habitat_id]">
 														<option disabled selected>Habitat type&hellip;</option>
 														{% for habitatcat in habitatcats.all %}
 															<optgroup label="{{ habitatcat.habitat_category }}">
@@ -518,11 +485,114 @@
 											</td>
 											<td>
 												<div class="form-group">
-													<input type="text" class="form-control" name="habitat_restored[{{ i }}][date]">
+													<input type="text" class="form-control" name="habitat_restored[0][date]">
 												</div>
 											</td>
 										</tr>
-									{% endfor %}
+										<tr>
+											<td>
+												<div class="form-group">
+													<input type="number" class="form-control" name="habitat_restored[1][areaHA]" placeholder="hectares">
+												</div>
+											</td>
+											<td>
+												<div class="form-group">
+													<select class="form-control" name="habitat_restored[1][habitat_id]">
+														<option disabled selected>Habitat type&hellip;</option>
+														{% for habitatcat in habitatcats.all %}
+															<optgroup label="{{ habitatcat.habitat_category }}">
+																{% for habitat in habitats.all if habitat.habitat_categories_id == habitatcat.id %}
+																	<option value="{{ habitat.id }}">{{ habitat.habitat }}</option>		        		
+											    				{% endfor %}
+										    				</optgroup>
+										    			{% endfor %}
+									    			</select>
+									    		</div>
+											</td>
+											<td>
+												<div class="form-group">
+													<input type="text" class="form-control" name="habitat_restored[1][date]">
+												</div>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<div class="form-group">
+													<input type="number" class="form-control" name="habitat_restored[2][areaHA]" placeholder="hectares">
+												</div>
+											</td>
+											<td>
+												<div class="form-group">
+													<select class="form-control" name="habitat_restored[2][habitat_id]">
+														<option disabled selected>Habitat type&hellip;</option>
+														{% for habitatcat in habitatcats.all %}
+															<optgroup label="{{ habitatcat.habitat_category }}">
+																{% for habitat in habitats.all if habitat.habitat_categories_id == habitatcat.id %}
+																	<option value="{{ habitat.id }}">{{ habitat.habitat }}</option>		        		
+											    				{% endfor %}
+										    				</optgroup>
+										    			{% endfor %}
+									    			</select>
+									    		</div>
+											</td>
+											<td>
+												<div class="form-group">
+													<input type="text" class="form-control" name="habitat_restored[2][date]">
+												</div>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<div class="form-group">
+													<input type="number" class="form-control" name="habitat_restored[3][areaHA]" placeholder="hectares">
+												</div>
+											</td>
+											<td>
+												<div class="form-group">
+													<select class="form-control" name="habitat_restored[3][habitat_id]">
+														<option disabled selected>Habitat type&hellip;</option>
+														{% for habitatcat in habitatcats.all %}
+															<optgroup label="{{ habitatcat.habitat_category }}">
+																{% for habitat in habitats.all if habitat.habitat_categories_id == habitatcat.id %}
+																	<option value="{{ habitat.id }}">{{ habitat.habitat }}</option>		        		
+											    				{% endfor %}
+										    				</optgroup>
+										    			{% endfor %}
+									    			</select>
+									    		</div>
+											</td>
+											<td>
+												<div class="form-group">
+													<input type="text" class="form-control" name="habitat_restored[3][date]">
+												</div>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<div class="form-group">
+													<input type="number" class="form-control" name="habitat_restored[4][areaHA]" placeholder="hectares">
+												</div>
+											</td>
+											<td>
+												<div class="form-group">
+													<select class="form-control" name="habitat_restored[4][habitat_id]">
+														<option disabled selected>Habitat type&hellip;</option>
+														{% for habitatcat in habitatcats.all %}
+															<optgroup label="{{ habitatcat.habitat_category }}">
+																{% for habitat in habitats.all if habitat.habitat_categories_id == habitatcat.id %}
+																	<option value="{{ habitat.id }}">{{ habitat.habitat }}</option>		        		
+											    				{% endfor %}
+										    				</optgroup>
+										    			{% endfor %}
+									    			</select>
+									    		</div>
+											</td>
+											<td>
+												<div class="form-group">
+													<input type="text" class="form-control" name="habitat_restored[4][date]">
+												</div>
+											</td>
+										</tr>
 									</tbody>
 								</table>
 							</div>
@@ -538,46 +608,15 @@
 										</tr>
 									</thead>
 									<tbody>
-									{% for oldhabc in old.createdhabitats %}
-										{% set k = loop.index - 1 %}
 										<tr>
 											<td>
 												<div class="form-group">
-													<input type="number" class="form-control" name="habitat_created[{{ k }}][areaHA]" placeholder="hectares" value="{{ oldhabc.areaHA }}">
+													<input type="number" class="form-control" name="habitat_created[0][areaHA]" placeholder="hectares">
 												</div>
 											</td>
 											<td>
 												<div class="form-group">
-													<select class="form-control" name="habitat_created[{{ k }}][habitat_id]">
-														<option disabled selected>Habitat type&hellip;</option>
-														{% for habitatcat in habitatcats.all %}
-															<optgroup label="{{ habitatcat.habitat_category }}">
-																{% for habitat in habitats.all if habitat.habitat_categories_id == habitatcat.id %}
-																	<option value="{{ habitat.id }}" {{ oldhabc.habitat_id == habitat.id ? 'selected' : '' }}>{{ habitat.habitat }}</option>		        		
-											    				{% endfor %}
-										    				</optgroup>
-										    			{% endfor %}
-									    			</select>
-									    		</div>
-											</td>
-											<td>
-												<div class="form-group">
-													<input type="text" class="form-control" name="habitat_created[{{ k }}][date]" value="{{ oldhabc.date }}">
-												</div>
-											</td>
-										</tr>
-									{% endfor %}
-
-									{% for i in old.restoredhabitats|length..4 %}
-										<tr>
-											<td>
-												<div class="form-group">
-													<input type="number" class="form-control" name="habitat_created[{{ i }}][areaHA]" placeholder="hectares">
-												</div>
-											</td>
-											<td>
-												<div class="form-group">
-													<select class="form-control" name="habitat_created[{{ i }}][habitat_id]">
+													<select class="form-control" name="habitat_created[0][habitat_id]">
 														<option disabled selected>Habitat type&hellip;</option>
 														{% for habitatcat in habitatcats.all %}
 															<optgroup label="{{ habitatcat.habitat_category }}">
@@ -591,11 +630,114 @@
 											</td>
 											<td>
 												<div class="form-group">
-													<input type="text" class="form-control" name="habitat_created[{{ i }}][date]">
+													<input type="text" class="form-control" name="habitat_created[0][date]">
 												</div>
 											</td>
 										</tr>
-									{% endfor %}
+										<tr>
+											<td>
+												<div class="form-group">
+													<input type="number" class="form-control" name="habitat_created[1][areaHA]" placeholder="hectares">
+												</div>
+											</td>
+											<td>
+												<div class="form-group">
+													<select class="form-control" name="habitat_created[1][habitat_id]">
+														<option disabled selected>Habitat type&hellip;</option>
+														{% for habitatcat in habitatcats.all %}
+															<optgroup label="{{ habitatcat.habitat_category }}">
+																{% for habitat in habitats.all if habitat.habitat_categories_id == habitatcat.id %}
+																	<option value="{{ habitat.id }}">{{ habitat.habitat }}</option>		        		
+											    				{% endfor %}
+										    				</optgroup>
+										    			{% endfor %}
+									    			</select>
+									    		</div>
+											</td>
+											<td>
+												<div class="form-group">
+													<input type="text" class="form-control" name="habitat_created[1][date]">
+												</div>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<div class="form-group">
+													<input type="number" class="form-control" name="habitat_created[2][areaHA]" placeholder="hectares">
+												</div>
+											</td>
+											<td>
+												<div class="form-group">
+													<select class="form-control" name="habitat_created[2][habitat_id]">
+														<option disabled selected>Habitat type&hellip;</option>
+														{% for habitatcat in habitatcats.all %}
+															<optgroup label="{{ habitatcat.habitat_category }}">
+																{% for habitat in habitats.all if habitat.habitat_categories_id == habitatcat.id %}
+																	<option value="{{ habitat.id }}">{{ habitat.habitat }}</option>		        		
+											    				{% endfor %}
+										    				</optgroup>
+										    			{% endfor %}
+									    			</select>
+									    		</div>
+											</td>
+											<td>
+												<div class="form-group">
+													<input type="text" class="form-control" name="habitat_created[2][date]">
+												</div>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<div class="form-group">
+													<input type="number" class="form-control" name="habitat_created[3][areaHA]" placeholder="hectares">
+												</div>
+											</td>
+											<td>
+												<div class="form-group">
+													<select class="form-control" name="habitat_created[3][habitat_id]">
+														<option disabled selected>Habitat type&hellip;</option>
+														{% for habitatcat in habitatcats.all %}
+															<optgroup label="{{ habitatcat.habitat_category }}">
+																{% for habitat in habitats.all if habitat.habitat_categories_id == habitatcat.id %}
+																	<option value="{{ habitat.id }}">{{ habitat.habitat }}</option>		        		
+											    				{% endfor %}
+										    				</optgroup>
+										    			{% endfor %}
+									    			</select>
+									    		</div>
+											</td>
+											<td>
+												<div class="form-group">
+													<input type="text" class="form-control" name="habitat_created[3][date]">
+												</div>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<div class="form-group">
+													<input type="number" class="form-control" name="habitat_created[4][areaHA]" placeholder="hectares">
+												</div>
+											</td>
+											<td>
+												<div class="form-group">
+													<select class="form-control" name="habitat_created[4][habitat_id]">
+														<option disabled selected>Habitat type&hellip;</option>
+														{% for habitatcat in habitatcats.all %}
+															<optgroup label="{{ habitatcat.habitat_category }}">
+																{% for habitat in habitats.all if habitat.habitat_categories_id == habitatcat.id %}
+																	<option value="{{ habitat.id }}">{{ habitat.habitat }}</option>		        		
+											    				{% endfor %}
+										    				</optgroup>
+										    			{% endfor %}
+									    			</select>
+									    		</div>
+											</td>
+											<td>
+												<div class="form-group">
+													<input type="text" class="form-control" name="habitat_created[4][date]">
+												</div>
+											</td>
+										</tr>
 									</tbody>
 								</table>
 							</div>

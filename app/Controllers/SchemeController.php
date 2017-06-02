@@ -4,9 +4,11 @@ namespace App\Controllers;
 
 use Slim\Views\Twig as View;
 use App\Models\Scheme;
+use App\Models\Trust;
 use App\Models\FundingSource as f;
 use App\Controllers\Controller;
 use Respect\Validation\Validator as v;
+use App\Auth\Auth as u;
 
 /**
  * SchemeController Class
@@ -124,12 +126,44 @@ class SchemeController extends Controller
 		$scheme = Scheme::where('id', $args['id'])->with('trusts', 'habitats', 'partners', 'fundingSources', 'restoredHabitats', 'createdHabitats', 'species')->first();
 		$sources = f::where('scheme_id', $args['id'])->with('fundingPartner')->get();
 
-
+		if(!$scheme) {
+			$this->flash->addMessage('error', 'That scheme does not exist');
+			return $this->response->withRedirect($this->router->pathFor('scheme.all'));
+		}
+		
 		return $this->view->render($response, 'schemes/view.twig', [
 	        'scheme' => $scheme,
 	        'sources' => $sources,
 	        'restored' => $scheme->restoredHabitats()->with('habitat')->get(),
 	        'created' => $scheme->createdHabitats()->with('habitat')->get()
 	    ]);
+	}
+
+	public function edit ($request, $response, $args) {
+		$user = u::user();
+		$scheme = Scheme::where('id', $args['id'])->with('trusts', 'habitats', 'partners', 'fundingSources', 'restoredHabitats', 'createdHabitats', 'species')->whereHas('trusts', function ($query) use ($user) {
+		    $query->where('idtrusts', $user->trusts_idtrusts);
+		})->first();
+		$sources = f::where('scheme_id', $args['id'])->with('fundingPartner')->get();
+
+		if(!$scheme) {
+			$this->flash->addMessage('error', 'You do not have rights to edit this scheme');
+			return $this->response->withRedirect($this->router->pathFor('scheme.all'));
+		}
+
+		return $this->view->render($response, 'schemes/add.twig', [
+			'old' => $scheme,
+			'edit' => true,
+			'sources' => $sources
+		]);
+	}
+
+	public function listAll ($request, $response) {
+		$user = u::user();
+		$schemes = Trust::where('idtrusts', $user->trusts_idtrusts)->with('schemes')->first();
+
+		return $this->view->render($response, 'schemes/all.twig', [
+			'schemes' => $schemes
+		]);
 	}
 }
