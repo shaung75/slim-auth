@@ -5,8 +5,12 @@
 		<div class="col-md-12">
 			<h2>New Living Landscape Scheme</h2>	
 			<hr>
-
-			<form action="{{ path_for('scheme.add') }}" method="post" autocomplete="off">
+			
+			{% if edit == true %}
+				<form action="{{ path_for('scheme.edit', { 'id': old.id }) }}" method="post" autocomplete="off">
+			{% else %}
+				<form action="{{ path_for('scheme.add') }}" method="post" autocomplete="off">
+			{%  endif %}
 
 				<div class="form-group{{ errors.schemeName ? ' has-error' : '' }}">
 					<label for="schemeName">Scheme Name</label>

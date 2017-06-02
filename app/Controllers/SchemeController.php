@@ -119,7 +119,7 @@ class SchemeController extends Controller
 
 		$this->flash->addMessage('info', 'New scheme "'. $request->getParam('schemeName') .'" has been created');
 
-		return $response->withRedirect($this->router->pathFor('scheme.add'));
+		return $response->withRedirect($this->router->pathFor('scheme.edit', ['id' => $scheme->id]));
 	}
 
 	public function view($request, $response, $args) {
@@ -160,6 +160,26 @@ class SchemeController extends Controller
 
 	public function listAll ($request, $response) {
 		$user = u::user();
+
+		/**
+		 * To-Do: View all schemes if admin
+		 */
+		/*
+		if($user->level > 0) {
+			$schemes['schemes'] = Scheme::all();
+
+			return $this->view->render($response, 'schemes/all.twig', [
+				'schemes' => $schemes
+			]);
+		}
+		else {
+			$schemes = Trust::where('idtrusts', $user->trusts_idtrusts)->with('schemes')->first();
+
+			return $this->view->render($response, 'schemes/all.twig', [
+				'schemes' => $schemes
+			]);
+		}
+		*/
 		$schemes = Trust::where('idtrusts', $user->trusts_idtrusts)->with('schemes')->first();
 
 		return $this->view->render($response, 'schemes/all.twig', [

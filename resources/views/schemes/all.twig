@@ -4,7 +4,6 @@
 	<div class="row">
 		<div class="col-md-12">
 			<h3>My Schemes&hellip;</h3>
-			
 			<table class="table">
 				<thead>
 					<tr>
@@ -22,7 +21,7 @@
 		        			<td><a href="{{ path_for('scheme.view', { 'id': scheme.id }) }}">{{ scheme.schemeName }}</a></td>
 		        			<td>{{ scheme.created_at }}</td>
 		        			<td>{{ scheme.updated_at }}</td>
-		        			<td><a href="{{ path_for('scheme.view', { 'id': scheme.id }) }}">Edit</a></td>
+		        			<td><a href="{{ path_for('scheme.edit', { 'id': scheme.id }) }}">Edit</a></td>
 		        		</tr>
 
 		    		{% endfor %}
