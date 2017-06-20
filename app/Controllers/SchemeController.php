@@ -180,11 +180,29 @@ class SchemeController extends Controller
 
 		$scheme->save();
 		
-		// Update relationships
+		// Update trusts
 		$scheme->trusts()->sync($request->getParam('trust'));
-		$scheme->species()->sync($request->getParam('species'));
-		$scheme->habitats()->sync($request->getParam('habitats'));
-		$scheme->partners()->sync($request->getParam('partners'));
+
+		// Update species
+		if($request->getParam('species')) {
+			$scheme->species()->sync($request->getParam('species'));	
+		} else {
+			$scheme->species()->sync([]);
+		}
+		
+		// Update habitats
+		if($request->getParam('habitats')) {
+			$scheme->habitats()->sync($request->getParam('habitats'));	
+		} else {
+			$scheme->habitats()->sync([]);
+		}
+		
+		// Update partners
+		if($request->getParam('partners')) {
+			$scheme->partners()->sync($request->getParam('partners'));
+		} else {
+			$scheme->partners()->sync([]);
+		}
 		
 		$this->flash->addMessage('info', 'Scheme updated');
 
