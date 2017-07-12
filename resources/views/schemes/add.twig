@@ -545,7 +545,7 @@
 							{% endif %}
 						</div>
 						<div class="form-group{{ errors.deliveryAgriEnvironmentalSchemes ? ' has-error' : '' }}">
-							<label for="deliveryAgriEnvironmentalSchemes">Agri Environmental Schemes</label>
+							<label for="deliveryAgriEnvironmentalSchemes">Agri-environment schemes</label>
 							<textarea name="deliveryAgriEnvironmentalSchemes" class="form-control" rows="5">{{ old.deliveryAgriEnvironmentalSchemes }}</textarea>
 							{% if errors.deliveryAgriEnvironmentalSchemes %}
 								<span class="help-block">{{ errors.deliveryAgriEnvironmentalSchemes | first }}</span>
@@ -626,6 +626,7 @@
 <!-- Benefits tab -->
 					<div role="tabpanel" class="tab-pane" id="benefits">
 						<h3>Ecosystem services provided</h3>
+						<p>Please give details and include reference to any evidence</p>
 						<div class="form-group{{ errors.benefitClimateChange ? ' has-error' : '' }}">
 							<label for="benefitClimateChange">Climate change adaption</label>
 							<textarea name="benefitClimateChange" class="form-control" rows="5">{{ old.benefitClimateChange }}</textarea>
